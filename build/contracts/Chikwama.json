@@ -1,0 +1,212 @@
+{
+  "contract_name": "Chikwama",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "name": "_pin",
+          "type": "uint256"
+        },
+        {
+          "name": "_newPin",
+          "type": "uint256"
+        }
+      ],
+      "name": "changePin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_add",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "name": "_chikwamaType",
+          "type": "uint8"
+        },
+        {
+          "name": "_pin",
+          "type": "uint256"
+        }
+      ],
+      "name": "createChikwama",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getChikwama",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "name": "_pin",
+          "type": "uint256"
+        }
+      ],
+      "name": "checkPin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "accountCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "NationalID",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "ChikwamaAddress",
+          "type": "address"
+        }
+      ],
+      "name": "CreateAccount",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b5b6103808061001f6000396000f300606060405263ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663169fad3d811461006957806383dbabbb14610099578063b50ddad6146100db578063d4d75be81461010d578063e4af29fc1461013a575b600080fd5b341561007457600080fd5b61008560043560243560443561015f565b604051901515815260200160405180910390f35b34156100a457600080fd5b610085600160a060020a036004351660243560443560ff606435166084356101d7565b604051901515815260200160405180910390f35b34156100e657600080fd5b6100f16004356102ce565b604051600160a060020a03909116815260200160405180910390f35b341561011857600080fd5b610085600435602435610309565b604051901515815260200160405180910390f35b341561014557600080fd5b61014d61034e565b60405190815260200160405180910390f35b600083815260016020908152604080832054600160a060020a0316808452600283528184208785529092528220600401548414156101c957600160a060020a03811660009081526002602090815260408083208884529091529020600401839055600191506101ce565b600091505b5b509392505050565b600083815260016020526040812054600160a060020a031615156102c4576000848152600160208181526040808420805473ffffffffffffffffffffffffffffffffffffffff19908116600160a060020a038d1690811790925581865260028085528387208b88529094528286208054909116909117815591820188905581830189905560038201805460ff191660ff8916179055600490910185905582549091019091557f452033573db49cf36742da05fb11e8af9b693e2d3effa92546a2871c157ca117908590889051918252600160a060020a031660208201526040908101905180910390a15060015b5b95945050505050565b600081815260016020908152604080832054600160a060020a0390811680855260028452828520868652909352922054909116905b50919050565b600082815260016020908152604080832054600160a060020a03168084526002835281842086855290925282206004015483141561034657600191505b5b5092915050565b600054815600a165627a7a723058209ac68ae0c720531b7ec948340f4893ceb4cf3c7464990891295d2f8d0734ad880029",
+  "networks": {
+    "1506416404804": {
+      "events": {
+        "0x452033573db49cf36742da05fb11e8af9b693e2d3effa92546a2871c157ca117": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "NationalID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ChikwamaAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CreateAccount",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5284ebb80790f730a6564a8e72428e26594da6a8",
+      "updated_at": 1506416852877
+    },
+    "1506420756564": {
+      "events": {
+        "0x452033573db49cf36742da05fb11e8af9b693e2d3effa92546a2871c157ca117": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "NationalID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ChikwamaAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CreateAccount",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xca6111b5a46c59ccbbdb38a2ce6ea85316df9d22",
+      "updated_at": 1506420837647
+    },
+    "1506423419373": {
+      "events": {
+        "0x452033573db49cf36742da05fb11e8af9b693e2d3effa92546a2871c157ca117": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "NationalID",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "ChikwamaAddress",
+              "type": "address"
+            }
+          ],
+          "name": "CreateAccount",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0e183a5a924d1f40e6c5a9c9d823fac827b9b385",
+      "updated_at": 1506423479815
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1506423479815
+}

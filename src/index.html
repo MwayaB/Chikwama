@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>MakwachaToken - Wallet</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <h1 class="text-center">Chikwama</h1>
+          <hr/>
+          <br/>
+        </div>
+      </div>
+     
+         
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+      <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Login</h3>
+            </div>
+         
+            <div class="panel-body">
+              <strong>Status</strong>: <span id="loginStatus"></span> Enter ID and Pin<br/><br/>
+              <input type="text" class="form-control" id="TTAccId" placeholder="ID Number" />
+              <input type="text" class="form-control" id="TTAccPin" placeholder="Pin" /><br />
+              <button class="btn btn-primary" id="loginButton" type="button">Login</button>
+            </div>
+          </div>
+      
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Account Details</h3>
+            </div>
+         
+            <div class="panel-body">
+              <h4>Account Status</h4>
+              <strong>Status</strong>: <span id="accountStatus"></span> Create Account<br/><br/>
+              <input type="text" class="form-control" id="TTChikwamaId" placeholder="ID Number" />
+              <input type="text" class="form-control" id="TTChikwamaAddress" placeholder="Address" />
+              <input type="text" class="form-control" id="TTChikwamaType" placeholder="Account Type" />
+              <input type="text" class="form-control" id="TTChikwamaPin" placeholder="Pin" /><br />
+              <button class="btn btn-primary" id="createButton" type="button">Create</button><br />
+            </div>
+          </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Approve</h3>
+            </div>
+         
+            <div class="panel-body">
+              <h4>Allowance</h4>
+              <strong>Allowance</strong>: <span id="TTAproved"></span> MK<br/><br/>
+              <input type="text" class="form-control" id="TTAppId" placeholder="ID Number" />
+              <input type="text" class="form-control" id="TTAppAmount" placeholder="Amount" /><br />
+              <button class="btn btn-primary" id="approveButton" type="button">Approve</button><br />
+              
+            </div>
+          </div>
+      
+        
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Issue</h3>
+            </div>
+         
+            <div class="panel-body">
+              <h4>Balance</h4>
+              <strong>Balance</strong>: <span id="TTApproved"></span> MK<br/><br/>
+              <input type="text" class="form-control" id="TTIssueId" placeholder="ID Number" />
+              <input type="text" class="form-control" id="TTIssueAmount" placeholder="Amount" />
+              <button class="btn btn-primary" id="issueButton" type="button">Issue</button><br />
+              
+            </div>
+          </div>
+           <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"> Transfer</h3>
+            </div>
+         
+            <div class="panel-body">
+               <h4>Balance</h4>
+              <strong>Balance</strong>: <span id="TTBalance"></span> MK<br/><br/>
+              <input type="text" class="form-control" id="TTFromId" placeholder="Your ID Number" />
+              <input type="text" class="form-control" id="TTToId" placeholder="To ID Number" />
+              <input type="text" class="form-control" id="TTTransferAmount" placeholder="Amount" />
+              <input type="text" class="form-control" id="TTTransferPin" placeholder="Pin" /><br />
+              <button class="btn btn-primary" id="transferButton" type="button">Transfer</button>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Withdraw</h3>
+            </div>
+         
+            <div class="panel-body">
+              <h4>Balance</h4>
+              <strong>Balance</strong>: <span id="TTBalance2"></span> MK<br/><br/>
+              <input type="text" class="form-control" id="TTWithId" placeholder="ID Number" />
+              <input type="text" class="form-control" id="TTWithAmount" placeholder="Amount" /><br />
+              <button class="btn btn-primary" id="withdrawButton" type="button">Withdraw</button><br />
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

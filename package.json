@@ -1,20 +1,18 @@
 {
   "name": "chikwama",
-  "version": "0.0.1",
-  "description": "Decentralised application made to give basic access to the ethereum blockchain to the unbanked",
-  "repository": "https://github.com/Chikwama",
-  "scripts": {
-    "build": "webpack",
-    "dev": "webpack-dev-server"
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
   },
-  "author": "Mwayanjana Bolokonya",
-  "license": "GPL-3.0",
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "web3": "~0.18",
-    "json-loader": "~0.5",
-    "truffle-contract": "~1",
-    "webpack": "~2",
-    "webpack-dev-server": "~2",
-    "bootstrap": "~3"
+    "lite-server": "^2.3.0"
   }
 }
