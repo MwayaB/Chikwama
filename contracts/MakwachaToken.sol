@@ -34,14 +34,14 @@ contract Chikwama{
 
     }
     
-    function getChikwama(uint256 _id) public returns(address) {
+    function getChikwama(uint256 _id) public constant returns(address) {
         address _add = accounts[_id];
       
         return chikwama[_add][_id].add;
     
     }
     
-    function checkPin(uint256 _id, uint256 _pin) public returns(bool){
+    function checkPin(uint256 _id, uint256 _pin) public constant returns(bool){
         address _add = accounts[_id];
         if(chikwama[_add][_id].pin==_pin)return true;
     }
@@ -57,6 +57,7 @@ contract Chikwama{
         else return false;
     }
 }
+
 
 contract MakwachaToken {
     
