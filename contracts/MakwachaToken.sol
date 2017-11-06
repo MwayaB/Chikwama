@@ -62,15 +62,16 @@ contract Chikwama{
 
 contract MakwachaToken {
     
-     /* Public variables of the token */
+    /* State Variables */
     string public name;
     string public symbol;
     uint8 public decimals;
     uint256 public totalSupply;
     address public centralOffice;
     uint256 public chikwamaFee;
-    
-    
+    uint256 public exchangeRate;
+    uint256 public gasRepaid;
+    bool mutex;
   
     
     
@@ -79,7 +80,8 @@ contract MakwachaToken {
     
     mapping (address => mapping (address => uint256)) public allowance;
     
-  
+    /*public even when central office changes*/
+    event ChangedCentralOffice(address indexed oldCentralOffice, address indexed newCentralOffice);
     
     /* This generates a public event on the blockchain that will notify clients of new Makwacha being issued*/
     event Issue(uint256 from, uint256 to, uint256 value);
@@ -89,6 +91,65 @@ contract MakwachaToken {
     
      /* This notifies clients about the amount burnt */
     event Burn(uint256 from, uint256 value);
+    
+    /* Modifiers */
+
+    // To throw call not made by centralOffice
+    modifier onlyCentralOffice() {
+        require (msg.sender == centralOffice);
+        _;
+    }
+    
+    // This modifier can be used on functions with external calls to
+    // prevent reentry attacks.
+    // Constraints:
+    //   Protected functions must have only one point of exit.
+    //   Protected functions cannot use the `return` keyword
+    //   Protected functions return values must be through return parameters.
+    modifier preventReentry() {
+        require (!mutex);
+        mutex = true;
+        _;
+        delete mutex;
+        return;
+    }
+
+    // This modifier can be applied to pulic access state mutation functions
+    // to protect against reentry if a `mutextProtect` function is already
+    // on the call stack.
+    modifier noReentry() {
+        require (!mutex);
+        _;
+    }
+
+    // Same as noReentry() but intended to be overloaded
+    modifier canEnter() {
+        require (!mutex);
+        _;
+    }
+    
+      // Change the owner of a contract
+    function changeCentralOffice(address _newCentralOffice)
+        public onlyCentralOffice returns (bool)
+    {
+        centralOffice = _newCentralOffice;
+        ChangedCentralOffice(msg.sender, centralOffice);
+        return true;
+    }
+    
+     function contractBalance() public constant returns(uint) {
+        return this.balance;
+    }
+    
+    function safeSend(address _recipient, uint _ether)
+        internal
+        preventReentry()
+        returns (bool success_)
+    {
+        require(_recipient.call.value(_ether)());
+        success_ = true;
+    }
+    
     
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function MakwachaToken(address _chikwamaContract) public {
@@ -103,13 +164,15 @@ contract MakwachaToken {
         decimals = 2;                            // Amount of decimals for display purposes
     }
     
+   function() public payable {
+    } 
     
     function issue(address _to, uint256 _fromId, uint256 _toId, uint _value, uint256 _transactionFee) public returns (bool success)
     {
         require (_value < allowance[centralOffice][msg.sender]);     // Check allowance
         allowance[centralOffice][msg.sender] -= _value;
-        chikwamaFee = _transactionFee * 120/100;  //sets chikwamafee by putting a 20% markup on transaction fee at current exchange rate
-        
+        gasRepaid = _transactionFee/(exchangeRate);
+        msg.sender.transfer(gasRepaid);
         _issue(_to,_fromId, _toId, _value);
         return true;
     }
@@ -136,7 +199,8 @@ contract MakwachaToken {
     function transferFrom(address _from, uint256 _fromId, address _to, uint256 _toId, uint _value, uint256 _transactionFee) public returns (bool success) {
         require (_value < allowance[_from][msg.sender]);     // Check allowance
         allowance[_from][msg.sender] -= _value;
-        chikwamaFee = _transactionFee * 120/100;  //sets chikwamafee by putting a 20% markup on transaction fee at current exchange rate
+        gasRepaid = _transactionFee/(exchangeRate);
+        msg.sender.transfer(gasRepaid);
         _transfer(_from, _fromId, _to,_toId, _value);
         return true;
     }
@@ -145,6 +209,7 @@ contract MakwachaToken {
     /// @param _spender The address authorized to spend
     /// @param _value the max amount they can spend
     function approve(address _spender, uint256 _value)public returns (bool success) {
+        require(msg.sender == centralOffice);
         allowance[msg.sender][_spender] = _value;
         return true;
     }
@@ -165,7 +230,6 @@ contract MakwachaToken {
     
     
   function burnFrom(address _from, uint256 _fromId, uint256 _value, uint256 _transactionFee) public returns (bool success) {
-        chikwamaFee = _transactionFee * 120/100;
         require(balanceOf[_from] >= _value+ chikwamaFee);                // Check if the targeted balance is enough
         require(_value + chikwamaFee <= allowance[_from][msg.sender]);    // Check allowance
         balanceOf[_from] -= (_value+chikwamaFee);                         // Subtract from the targeted balance
@@ -174,14 +238,21 @@ contract MakwachaToken {
         var agentFee = chikwamaFee * 20/100;
         balanceOf[centralOffice]+=(chikwamaFee-agentFee);
         balanceOf[msg.sender]+=agentFee;
+        gasRepaid = _transactionFee/(exchangeRate);
+        msg.sender.transfer(gasRepaid);
         Burn(_fromId, _value);
         return true;
     }
     
-    function getChikwamaFee(uint256 _transactionFee) public returns(uint256)
+    function setChikwamaFee(uint256 _transactionFee, uint256 _markUp) public returns(uint256)
     {
-        chikwamaFee = _transactionFee*120/100;
+        chikwamaFee = _transactionFee*(_markUp/100);
         return chikwamaFee;
+    }
+    
+    function setExchangeRate(uint256 _exchangeRate) public
+    {
+        exchangeRate = _exchangeRate;
     }
     
   
