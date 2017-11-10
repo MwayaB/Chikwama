@@ -1,10 +1,5 @@
-var MakwachaToken = artifacts.require("./MakwachaToken.sol");
-var Chikwama = artifacts.require("./Chikwama.sol")
+var Account = artifacts.require("./Account.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Chikwama).then (function() {
-    deployer.deploy(MakwachaToken,Chikwama.address);
-  });
-  
-  
+  deployer.deploy(Account);
 };

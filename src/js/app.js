@@ -1,272 +1,139 @@
 App = {
-  
   web3Provider: null,
   contracts: {},
 
+  init: function() {
+    return App.initWeb3();
+  },
+
   initWeb3: function() {
-    // Is there is an injected web3 instance?
-if (typeof web3 !== 'undefined') {
-  App.web3Provider = web3.currentProvider;
-  web3 = new Web3(web3.currentProvider);
-} else {
-  // If no injected web3 instance is detected, fallback to the TestRPC.
-  App.web3Provider = new web3.providers.HttpProvider('http://localhost:8545');
-  web3 = new Web3(App.web3Provider);
-}
+    // Initialize web3 and set the provider to the testRPC.
+    if (typeof web3 !== 'undefined') {
+      App.web3Provider = web3.currentProvider;
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      // set the provider you want from Web3.providers
+      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+      web3 = new Web3(App.web3Provider);
+    }
 
     return App.initContract();
   },
 
-  initContract: function() 
-  {
-    $.getJSON('MakwachaToken.json', function(data) 
-    {
-        // Get the necessary contract artifact file and instantiate it with truffle-contract.
-        var MakwachaArtifact = data;
-        App.contracts.MakwachaToken = TruffleContract(MakwachaArtifact);
+  initContract: function() {
+    $.getJSON('Account.json', function(data) {
+      // Get the necessary contract artifact file and instantiate it with truffle-contract.
+      var AccountArtifact = data;
+      App.contracts.Account = TruffleContract(AccountArtifact);
 
-        // Set the provider for our contract.
-        App.contracts.MakwachaToken.setProvider(App.web3Provider);
+      // Set the provider for our contract.
+      App.contracts.Account.setProvider(App.web3Provider);
 
-    
+      // Use our contract to retieve and mark the adopted pets. //not sure about this
+    //  return App.getBalances();
     });
 
-    $.getJSON('Chikwama.json', function(data)
-    {
-        // Get the necessary contract artifact file and instantiate it with truffle-contract.
-        var ChikwamaArtifact = data;
-        App.contracts.Chikwama = TruffleContract(ChikwamaArtifact);
-
-        // Set the provider for our contract.
-        App.contracts.Chikwama.setProvider(App.web3Provider);
-
-    
-    });
-    $(document).on('click', '#loginButton', App.handleLogin);
-    
+    return App.bindEvents();
   },
 
-    bindEvents: function(id) {
-      
-      $(document).on('click', '#createButton', App.handleCreate(id));
-    $(document).on('click', '#approveButton', App.handleApproval);
-    $(document).on('click', '#issueButton', App.handleIssue);
+/*  bindEvents: function() {
     $(document).on('click', '#transferButton', App.handleTransfer);
-    $(document).on('click', '#withdrawButton', App.handleWithdrawal);
-  },
-
-  handleLogin: function()
-  {
-     web3.eth.getAccounts(function(error, accounts) {
-  if (error) {
-    console.log(error);
-  }
-
-  var account = accounts[0];
-    
-    var id = parseInt($('#TTAccId').val());
-    var pin = parseInt($('#TTAccPin').val());
-
-    console.log(id +' is trying to log in');
-    var chikwamaInstance;
-    
-    
-
-      App.contracts.Chikwama.deployed().then(function(instance) {
-        chikwamaInstance = instance;
-
-        return chikwamaInstance.checkPin(id,pin);
-      }).then(function(result) {
-        if(result)
-        {alert(id +' Logged in');
-        return App.bindEvents(id);}
-          })
-    });
-
-  },
-
-  handleCreate: function(thisId) {
-    var account = App.getAccount(thisId);
-
-    var id = parseInt($('#TTChikwamaId').val());
-    var type = parseInt($('#TTChikwamaType').val());
-    var address = $('#TTChikwamaAddress').val();
-    var pin = parseInt($('#TTChikwamaPin').val());
-    var value = 0;
-
-    console.log('Create Account' + id + ' address ' + address + ' Type ' + type);
-
-    var chikwamaInstance;
+  },*/
+  bindEvents: function() {
+     $(document).on('click', '#createAccount', App.handleAccountCreation);
+   },
 
 
-      App.contracts.Chikwama.deployed().then(function(instance) {
-        chikwamaInstance = instance;
+ /*handleAccountCreation: function(){
+   alert('Account Created!');
+ },*/
 
-        return chikwamaInstance.createChikwama(address, value, id, type, pin);
-      }).then(function(result) {
-        if(result)alert('Account Created!');
-          }).catch(function(err) {
-        console.log(err.message);
-      });
-   
-  },
-  
+   handleAccountCreation: function(){
+     event.preventDefault();
 
-  handleIssue: function(thisId) {
-    
-    var account = App.getAccount(thisId);
-    var id = parseInt($('#TTIssueID').val());
-    var amount = parseInt($('#TTIssueAmount').val());
-    var toAddress = App.getAccount(id);
+    // var account = App.getAccount(thisId);
 
-    console.log('Issue ' + amount + ' MK to ' + toAddress);
+     var id = parseInt($('#CHAccIndenty').val());
+     var type = parseInt($('#CHAccType').val());
+    // var address = $('#TTChikwamaAddress').val();
+     var pin = parseInt($('#CHAccPin').val());
+     var value = 0;
 
-    var makwachaTokenInstance;
+  console.log('Create Account' + id + ' pin ' + pin + ' Type ' + type);
 
-   
+     var chikwamaAccInstance;
 
-      var account = App.getAccount(thisId);
-      var transferFee = 1500;
+     App.contracts.Account.deployed().then(function(instance) {
+       chikwamaAccInstance = instance;
 
-      App.contracts.MakwachaToken.deployed().then(function(instance) {
-        makwachaTokenInstance = instance;
+       return chikwamaAccInstance.createChikwama( value, id, type, pin);
+     }).then(function(result) {
+       if(result)alert('Account Created!');
+         }).catch(function(err) {
+       console.log(err.message);
+     });
+   },
 
-        return makwachaTokenInstance.issue(toAddress, id, amount, transferFee);
-      }).then(function(result) {
-        if(result)alert('Issue Successful!');
-        return App.getBalances(account,id);
-      })
-  
-  },
+  handleTransfer: function() {
+    event.preventDefault();
 
-  handleTransfer: function(thisId) {
-    
-    var account = App.getAccount(thisId);
-    var fromId = parseInt($('#TTFromID').val());
     var amount = parseInt($('#TTTransferAmount').val());
-    var toId = $parseInt($('#TTToId').val());
-    var pin = parseInt($('#TTTransferPin').val());
+    var toAddress = $('#TTTransferAddress').val();
 
-    console.log('Transfer ' + amount +' from '+ FromId + ' MK to ' + toId);
+    console.log('Transfer ' + amount + ' TT to ' + toAddress);
 
-    var makwachaTokenInstance;
+    var tutorialTokenInstance;
 
-      var transferFee = 1500;
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
 
-      App.contracts.MakwachaToken.deployed().then(function(instance) {
-        makwachaTokenInstance = instance;
-        
-        return makwachaTokenInstance.transferFrom(App.getAccount(fromId), fromId, App.getAccount(toId), toId, amount, transferFee);
+      var account = accounts[0];
+
+      App.contracts.TutorialToken.deployed().then(function(instance) {
+        tutorialTokenInstance = instance;
+
+        return tutorialTokenInstance.transfer(toAddress, amount, {from: account});
       }).then(function(result) {
-        if(result)alert('Transfer Successful!');
-        return App.getBalances(account,fromId);
+        alert('Transfer Successful!');
+        return App.getBalances();
       }).catch(function(err) {
         console.log(err.message);
       });
-    
+    });
   },
 
-handleApproval: function(thisId) {
-   
+  getBalances: function(adopters, account) {
+    console.log('Getting balances...');
 
-    var account = App.getAccount(thisId);
-    
-    var spender = parseInt($(App.getAccount('#TTAppId')));
-    var amount = parseInt($(App.getAccount('#TTAppAmount')));
+    var tutorialTokenInstance;
 
-    console.log('Approve ' + amount + spender);
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
 
-    var makwachaTokenInstance;
+      var account = accounts[0];
 
-  
+      App.contracts.TutorialToken.deployed().then(function(instance) {
+        tutorialTokenInstance = instance;
 
-      App.contracts.MakwachaToken.deployed().then(function(instance) {
-        makwachaTokenInstance = instance;
-        return makwachaTokenInstance.approve(spender,amount);
+        return tutorialTokenInstance.balanceOf(account);
       }).then(function(result) {
-        alert(result);
-        allowance = App.getAllowance(account,spender);
-        $('#TTApproved').text(allowance);
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    
-  },
-
- getBalances: function(acc,id) {
-  
-
-      var account = acc;
-
-      console.log('Getting balances...');
-
-      var makwachaTokenInstance;
-
-      App.contracts.makwachaToken.deployed().then(function(instance) {
-        makwachaTokenInstance = instance;
-
-        return makwachaTokenInstance.balanceOf(App.getAccount(id));
-      }).then(function(result) {
-        balance = result;
+        balance = result.c[0];
 
         $('#TTBalance').text(balance);
       }).catch(function(err) {
         console.log(err.message);
       });
-    
-  },
-
-  getAllowance: function(acc,spender)
-  {
-      var account = acc;
-
-      console.log('Getting Allowance...');
-
-      var makwachaTokenInstance;
-
-      App.contracts.makwachaToken.deployed().then(function(instance) {
-        makwachaTokenInstance = instance;
-
-        return makwachaTokenInstance.allowance(account, spender);
-      }).then(function(result) {
-        allowance = result;
-
-        return allowance;
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-  },
-
-  getAccount: function(id)
-  {
-      web3.eth.getAccounts(function(error, accounts) {
-  if (error) {
-    console.log(error);
+    });
   }
 
-  var account = accounts[0];
-
-      console.log('Getting account address...');
-
-      var chikwamaInstance;
-
-      App.contracts.Chikwama.deployed().then(function(instance) {
-        chikwamaInstance = instance;
-
-        return chikwamaInstance.getChikwama(id);
-      }).then(function(result) {
-        address = result;
-
-        return address;
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-  });
-  }
-  };
+};
 
 $(function() {
   $(window).load(function() {
-    App.initWeb3();
+    App.init();
   });
 });
