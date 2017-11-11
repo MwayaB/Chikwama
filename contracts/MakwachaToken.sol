@@ -84,6 +84,11 @@ contract MakwachaToken {
     mapping (address => mapping (address => uint256)) public allowance;
     
     mapping(uint256 => Trade) public priceBook;
+
+     // Mapping for ether ownership of accumulated deposits, sales and refunds.
+    mapping (address => uint) etherBalance;
+
+
     
     
        
@@ -100,8 +105,10 @@ contract MakwachaToken {
      /* This notifies clients about the amount burnt */
     event Burn(address from, uint256 value);
     
+    event TradeResult(string);
+    
 
-
+    event ApprovedToIssue(address,address,uint);
     
     /* Modifiers */
 
@@ -208,11 +215,12 @@ contract MakwachaToken {
         trade.price = _price;
         trade.tokens = _tokens;
         
-        if(etherBalanceOf(trade.trader)<_price*_tokens)
+        if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(_price*_tokens)|| _tokens==0)
         return false;
         
-        setPrice(trade);
-
+        etherBalance[trade.trader] += (_price*_tokens);
+        setTrade(trade);
+    
         return true;
     }
     
@@ -223,76 +231,120 @@ contract MakwachaToken {
         trade.price = _price;
         trade.tokens = _tokens;
         
-        if(balanceOf[trade.trader]<_tokens)
+        if(balanceOf[trade.trader]<_tokens || _tokens == 0)
         return false;
         
-        setPrice(trade);
+        setTrade(trade);
  
         return true;
     }
     
     
-    function make(uint256 _tokens, address _buyer, address _seller)internal returns (bool success)
+    function make(uint256 _tokens,uint256 _price, address _buyer, address _seller)internal returns (bool success)
     {
         
         _transfer(_seller, _buyer, _tokens);
+        
+        etherBalance[_buyer] -=_tokens*_price;
+        _buyer.send(_tokens*_price);
+        
+    
     
     }
     
-    function setPrice(Trade _trade) internal returns(string status)
+    function setTrade(Trade _trade) internal 
     {
         if(sizeOf ==0)
         {
             priceBook[sizeOf] = _trade;
             sizeOf++;
-            return "trade added";
+            TradeResult("trade added");
         }
         
         for(uint x = 0; x<=sizeOf; x++)
         {
            
             
-            
-                if(priceBook[x].side==true && _trade.side==false && priceBook[x].price == _trade.price)
+                if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price && priceBook[x].side == _trade.side && priceBook[x].tokens == _trade.tokens)
+                    {
+                        TradeResult("trade already exists");
+                        return;
+                    }
+                else if(priceBook[x].side==true && _trade.side==false && priceBook[x].price <= _trade.price)
                 {
-                    
-                        make(_trade.tokens,_trade.trader,priceBook[x].trader);
-                        priceBook[x].tokens =-_trade.tokens;
-                        if(priceBook[x].tokens==0)
+                        if(priceBook[x].tokens>_trade.tokens)
                         {
-                            delete priceBook[x];
-                            sizeOf--;
+                             
+                             make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
+                             priceBook[x].tokens = (priceBook[x].tokens-_trade.tokens);
+                             TradeResult("buy executed");
+                             return;
                         }
-                        return "buy executed";
-                    
+                       else if(priceBook[x].tokens<_trade.tokens)
+                       {
+                           make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
+                           _trade.tokens=(_trade.tokens-priceBook[x].tokens);
+                           delete priceBook[x];
+                           setTrade(_trade);
+                       }
+                       else if(_trade.tokens==priceBook[x].tokens)
+                       {
+                            make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
+                           delete priceBook[x];
+                           TradeResult("buy executed");
+                           return;
+                       }
+                        else if(_trade.tokens==0)
+                       {
+                           TradeResult("buy executed");
+                           return;
+                       }
+                        
+                        
                 }
-                else if(priceBook[x].side==false && _trade.side==true && priceBook[x].price == _trade.price)
+                else if(priceBook[x].side==false && _trade.side==true && priceBook[x].price >= _trade.price)
                 {
-                        make(_trade.tokens,priceBook[x].trader,_trade.trader);
-                        priceBook[x].tokens =-_trade.tokens;
-                        if(priceBook[x].tokens==0)
+                        if(priceBook[x].tokens>_trade.tokens)
                         {
-                            delete priceBook[x];
-                            sizeOf--;
+                             
+                             make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
+                             priceBook[x].tokens = (priceBook[x].tokens-_trade.tokens);
+                             TradeResult("Sell executed");
+                             return;
                         }
-                        return "sell executed";
+                       else if(priceBook[x].tokens<_trade.tokens)
+                       {
+                           make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
+                           _trade.tokens=(_trade.tokens-priceBook[x].tokens);
+                           delete priceBook[x];
+                           setTrade(_trade);
+                       }
+                       else if(_trade.tokens==priceBook[x].tokens)
+                       {
+                            make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
+                           delete priceBook[x];
+                           TradeResult("Sell executed");
+                           return;
+                           
+                       }
+                        else if(_trade.tokens==0)
+                       {
+                           TradeResult("Sell executed");
+                           return;
+                       }
                     
                 }
-                else if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price)
-                {
-                    return "order already exists";
-                }
-                else
-                {
-                 priceBook[x] = _trade;
-                 sizeOf++;
-                 return "trade added";
-                }
+                
+               
             }
            
            
      
-        return "trade added";
+            priceBook[x-1] = _trade;
+            sizeOf++;
+           TradeResult("trade added");
+           return;
+        
         
         
         
@@ -317,6 +369,7 @@ contract MakwachaToken {
     /// @param _value the max amount they can spend
     function approveIssuance(address _spender, uint256 _value)public onlyCentralOffice returns (bool success) {
         allowance[msg.sender][_spender] = _value;
+        ApprovedToIssue(msg.sender,_spender,_value);
         return true;
     }
     
