@@ -60,6 +60,8 @@ contract Chikwama{
 contract MakwachaToken {
     
     /* State Variables */
+    uint public weiSent;
+    uint public etherSent;
     string public name;
     string public symbol;
     uint8 public decimals;
@@ -239,21 +241,19 @@ contract MakwachaToken {
         return true;
     }
     
-    
+    //transfer tokens from seller to buyer and ether from buyer to seller
     function make(uint256 _tokens,uint256 _price, address _buyer, address _seller)internal returns (bool success)
-    {
+    {   uint tradeValue = _tokens*_price;
         
         _transfer(_seller, _buyer, _tokens);
         
-        etherBalance[_buyer] -=_tokens*_price;
-        _buyer.send(_tokens*_price);
-        
-    
-    
+        etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
+        _seller.send(tradeValue);
     }
     
     function setTrade(Trade _trade) internal 
     {
+        // Check if this is the first entry in the price book
         if(sizeOf ==0)
         {
             priceBook[sizeOf] = _trade;
@@ -264,7 +264,7 @@ contract MakwachaToken {
         for(uint x = 0; x<=sizeOf; x++)
         {
            
-            
+            //Check if the trade is a buy or sell and try and make the trade against trades already in the price book else add the trade to the price book
                 if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price && priceBook[x].side == _trade.side && priceBook[x].tokens == _trade.tokens)
                     {
                         TradeResult("trade already exists");
@@ -349,6 +349,8 @@ contract MakwachaToken {
         
         
     }
+    
+    
 
       /// @notice Send `_value` tokens to `_to` in behalf of `_from`
     /// @param _from The address of the sender
