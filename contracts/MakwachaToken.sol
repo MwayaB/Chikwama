@@ -10,6 +10,7 @@ contract Chikwama{
         bytes32 pin;
     }
     
+    
     uint256 public accountCount;
     mapping(bytes32 => address) accounts;
     mapping(address => mapping(bytes32 => Account)) chikwama;
@@ -73,7 +74,7 @@ contract MakwachaToken {
     struct Trade
     {
         address trader;
-        bool side; //false =buy, true = sell
+        bool side; //true = sell, false =buy 
         uint256 price;
         uint256 tokens;
         
@@ -82,6 +83,8 @@ contract MakwachaToken {
     Trade public trade;
     /* This creates an array with all balances */
     mapping (address => uint256) public balanceOf;
+    
+    mapping(address => uint256) public tradeBalance;
     
     mapping (address => mapping (address => uint256)) public allowance;
     
@@ -160,6 +163,7 @@ contract MakwachaToken {
     
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function MakwachaToken(address _chikwamaContract) public {
+
         sizeOf = 0;
         uint256 initialSupply = 0;
         centralOffice= msg.sender;
@@ -217,8 +221,17 @@ contract MakwachaToken {
         trade.price = _price;
         trade.tokens = _tokens;
         
+        //Check if valid trade
         if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(_price*_tokens)|| _tokens==0)
         return false;
+          
+          // Check if this is the first entry in the price book
+        if(sizeOf ==0)
+        {
+            priceBook[sizeOf] = trade;
+            sizeOf++;
+            return true;
+        }
         
         etherBalance[trade.trader] += (_price*_tokens);
         setTrade(trade);
@@ -233,9 +246,20 @@ contract MakwachaToken {
         trade.price = _price;
         trade.tokens = _tokens;
         
-        if(balanceOf[trade.trader]<_tokens || _tokens == 0)
+        //Check if valid trade
+        if(balanceOf[trade.trader]<_tokens + tradeBalance[trade.trader] || _tokens == 0)
         return false;
         
+         // Check if this is the first entry in the price book
+        if(sizeOf ==0)
+        {
+            tradeBalance[trade.trader] += _tokens;
+            priceBook[sizeOf] = trade;
+            sizeOf++;
+            return true;
+        }
+        
+        tradeBalance[trade.trader] += _tokens;
         setTrade(trade);
  
         return true;
@@ -245,21 +269,61 @@ contract MakwachaToken {
     function make(uint256 _tokens,uint256 _price, address _buyer, address _seller)internal returns (bool success)
     {   uint tradeValue = _tokens*_price;
         
-        _transfer(_seller, _buyer, _tokens);
-        
+        if(_seller.send(tradeValue)){
         etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
-        _seller.send(tradeValue);
+        _transfer(_seller, _buyer, _tokens);
+        return true;
+        }
+        
+        return false;
+    }
+    
+    
+    function withdraw(bool _side, uint256 _tokens, uint256 _price) internal returns(bool)
+    {
+        uint256 _amount = _tokens * _price;
+        //check if seller, then withdraw amount from trade contract
+        if(_side)
+        {
+            if(tradeBalance[msg.sender]>=_tokens){
+                tradeBalance[msg.sender]-=_tokens;
+                return true;
+            }
+            return false;
+        }
+        
+        
+        //if buyer, then withdraw amount from trade contract
+        if(etherBalance[msg.sender]>= _amount)
+        {
+            etherBalance[msg.sender]-=_amount;
+            return true;
+        }
+        
+        return false;
+    }
+    
+    function  cancelTrade(bool _side, uint256 _price) returns(bool) 
+    {
+        for(uint x = 0; x<=sizeOf; x++)
+        {
+            if(priceBook[x].side == _side && priceBook[x].trader ==  msg.sender && priceBook[x].price == _price)
+            {
+                delete priceBook[x];
+                return withdraw(_side,priceBook[x].tokens,_price);
+                
+            }
+            
+        }
+        
+        
+        
+        
     }
     
     function setTrade(Trade _trade) internal 
     {
-        // Check if this is the first entry in the price book
-        if(sizeOf ==0)
-        {
-            priceBook[sizeOf] = _trade;
-            sizeOf++;
-            TradeResult("trade added");
-        }
+      
         
         for(uint x = 0; x<=sizeOf; x++)
         {
