@@ -55,7 +55,7 @@ App = {
 
      var id = parseInt($('#CHAccIndenty').val());
      var type = parseInt($('#CHAccType').val());
-    // var address = $('#TTChikwamaAddress').val();
+    var address = $(0x72e01e5f95d0c99f5071a71499cdc7562f285ab1);
      var pin = parseInt($('#CHAccPin').val());
      var value = 0;
 
@@ -66,7 +66,7 @@ App = {
      App.contracts.Account.deployed().then(function(instance) {
        chikwamaAccInstance = instance;
 
-       return chikwamaAccInstance.createChikwama( value, id, type, pin);
+       return chikwamaAccInstance.createChikwama( address, id, type, pin);
      }).then(function(result) {
        if(result)alert('Account Created!');
          }).catch(function(err) {
