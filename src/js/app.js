@@ -41,32 +41,62 @@ App = {
   },*/
   bindEvents: function() {
      $(document).on('click', '#createAccount', App.handleAccountCreation);
+     $(document).on('click','#logIn', App.handleLogin);
    },
 
 
  /*handleAccountCreation: function(){
    alert('Account Created!');
  },*/
+ handleLogin: function(){
+  event.preventDefault();
+
+  var id = parseInt($('#CHAccIdentity').val());
+  var pin = parseInt($('#CHAccPin').val());
+
+  var chikwamaAccInstance;
+  
+       App.contracts.Account.deployed().then(function(instance) {
+         chikwamaAccInstance = instance;
+  
+      return chikwamaAccInstance.checkPin(id, pin);
+       }).then(function(result) {
+        var msg = result.toString();
+        var length = msg.length;
+        var type = msg.substring(length-1,length);
+
+         if(length== 6) 
+         {           
+           if(parseInt(type) == 0){
+           window.open("central_office.html","_self");}
+         };
+         if(length==7)alert('Invalid id or pin');
+           }).catch(function(err) {
+         console.log(err.message);
+       });
+
+ },
 
    handleAccountCreation: function(){
      event.preventDefault();
 
     // var account = App.getAccount(thisId);
-
-     var id = parseInt($('#CHAccIndenty').val());
+    var x =0;
+     var id = parseInt($('#CHAccIdentity').val());
      var type = parseInt($('#CHAccType').val());
-    var address = $(0x72e01e5f95d0c99f5071a71499cdc7562f285ab1);
+    var address = web3.eth.accounts[x];
+     x++;
      var pin = parseInt($('#CHAccPin').val());
-     var value = 0;
+   
 
-  console.log('Create Account' + id + ' pin ' + pin + ' Type ' + type);
+  console.log('Create Account' + id + ' pin ' + pin + ' Type ' + type+ 'Account Count' + x);
 
      var chikwamaAccInstance;
 
      App.contracts.Account.deployed().then(function(instance) {
        chikwamaAccInstance = instance;
 
-       return chikwamaAccInstance.createChikwama( address, id, type, pin);
+       return chikwamaAccInstance.createAccount( address, id, type, pin);
      }).then(function(result) {
        if(result)alert('Account Created!');
          }).catch(function(err) {
