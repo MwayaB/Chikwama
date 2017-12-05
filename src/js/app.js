@@ -1,4 +1,8 @@
+var AccountId;
+
 App = {
+ 
+
   web3Provider: null,
   contracts: {},
 
@@ -24,13 +28,27 @@ App = {
     $.getJSON('Account.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
       var AccountArtifact = data;
-      App.contracts.Account = TruffleContract(AccountArtifact);
+      
+     
+      
 
+      App.contracts.Account = TruffleContract(AccountArtifact);
+     
       // Set the provider for our contract.
       App.contracts.Account.setProvider(App.web3Provider);
 
       // Use our contract to retieve and mark the adopted pets. //not sure about this
     //  return App.getBalances();
+    });
+
+    $.getJSON('ERC20.json', function(data){
+
+      var ERC20Artifact = data;
+
+      App.contracts.ERC20 = TruffleContract(ERC20Artifact);
+
+      App.contracts.ERC20.setProvider(App.web3Provider);
+
     });
 
     return App.bindEvents();
@@ -42,6 +60,8 @@ App = {
   bindEvents: function() {
      $(document).on('click', '#createAccount', App.handleAccountCreation);
      $(document).on('click','#logIn', App.handleLogin);
+     $(document).on('click','#Approve', App.handleIssuanceApproval);
+     
    },
 
 
@@ -53,7 +73,7 @@ App = {
 
   var id = parseInt($('#CHAccIdentity').val());
   var pin = parseInt($('#CHAccPin').val());
-
+  console.log(AccountId);
   var chikwamaAccInstance;
   
        App.contracts.Account.deployed().then(function(instance) {
@@ -68,7 +88,9 @@ App = {
          if(length== 6) 
          {           
            if(parseInt(type) == 0){
-           window.open("central_office.html","_self");}
+           window.open("central_office.html","_self");
+           AccountId = id;
+          }
          };
          if(length==7)alert('Invalid id or pin');
            }).catch(function(err) {
@@ -91,18 +113,45 @@ App = {
 
   console.log('Create Account' + id + ' pin ' + pin + ' Type ' + type+ 'Account Count' + x);
 
-     var chikwamaAccInstance;
+     var AccInstance;
 
      App.contracts.Account.deployed().then(function(instance) {
-       chikwamaAccInstance = instance;
+       AccInstance = instance;
 
-       return chikwamaAccInstance.createAccount( address, id, type, pin);
+       return AccInstance.createAccount( address, id, type, pin);
      }).then(function(result) {
        if(result)alert('Account Created!');
          }).catch(function(err) {
        console.log(err.message);
      });
    },
+
+  handleIssuanceApproval: function(){
+    event.preventDefault();
+
+    var agentId = parseInt($('#CHAccIdentity').val());
+    var allowance = parseInt($('#CHAccAllowance').val());
+    var pin = parseInt($('#CHAccPin').val());
+
+    console.log('Agent ID ' + agentId + ' Allowance '+ allowance + 'by' + AccountId);
+
+    
+        var ERC20Instance;
+        
+             App.contracts.ERC20.deployed().then(function(instance) {
+               ERC20Instance = instance;
+        
+               return ERC20Instance.approveIssuance( agentId, allowance);
+             }).then(function(result) {
+               if(result)alert(agentId +'approved to issue ' + allowance);
+                 }).catch(function(err) {
+               console.log(err.message);
+             });
+
+    
+        
+
+  },
 
   handleTransfer: function() {
     event.preventDefault();

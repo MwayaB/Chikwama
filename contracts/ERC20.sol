@@ -130,6 +130,14 @@ Base base;
         return true;
     }
     
+    function approveIssuance(uint256 _spender, uint256 _value)public returns (bool success) {
+        require(msg.sender == base.getCentralOffice());
+        address spender = account.getAddress(_spender);
+        allowance[msg.sender][spender] = _value;
+        ApprovedToIssue(msg.sender,spender,_value);
+        return true;
+    }
+    
      /* Internal transfer, only can be called by this contract */
     function _transfer(address _from, address _to, uint _value)internal{
         require (_to != 0x0);                                                                       // Prevent transfer to 0x0 address. Use burn() instead
