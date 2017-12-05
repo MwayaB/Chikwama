@@ -1,5 +1,7 @@
 pragma solidity ^0.4.13;
 
+import "./Base.sol";
+
 contract Account{
          
      struct AccountStructure 
@@ -10,6 +12,7 @@ contract Account{
         bytes32 pin;
     }
     
+    Base base;
     
     uint256 public accountCount;
     mapping(bytes32 => address) accounts;
@@ -81,9 +84,9 @@ contract Account{
         else return false;
     }
     
-    function changeAddress(uint256 _id, address _new, uint256 _pin) external returns(bool)
+    function changeCentralOffice(uint256 _id, address _new, uint256 _pin) external returns(bool)
     {
-        if(_checkPin(11223344,_pin)== true)
+        if(_checkPin(_id,_pin)== true)
         {
           uint8 accountType = account[getAddress(_id)][keccak256(_id)].accountType;
           deleteAccount(_id);

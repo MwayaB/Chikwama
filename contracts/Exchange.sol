@@ -12,10 +12,11 @@ pragma solidity ^0.4.13;
 
 import "./ERC20.sol";
 
-contract Exchange is ERC20
+contract Exchange
 {
 
     uint256 public sizeOf;
+    ERC20 erc20;
 
     struct Trade
     {
@@ -78,7 +79,7 @@ contract Exchange is ERC20
         trade.tokens = _tokens;
         
         //Check if valid trade
-        if(balanceOf[trade.trader]<_tokens + tradeBalance[trade.trader] || _tokens == 0)
+        if(erc20.balanceOf(trade.trader)<_tokens + tradeBalance[trade.trader] || _tokens == 0)
         return false;
         
          // Check if this is the first entry in the price book
@@ -102,7 +103,7 @@ contract Exchange is ERC20
         
         if(_seller.send(tradeValue)){
         etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
-        _transfer(_seller, _buyer, _tokens);
+        erc20.transfer(_buyer, _tokens);
         return true;
         }
         

@@ -51,9 +51,14 @@ event CentralOfficeCreated(string msg);
         public onlyCentralOffice returns (bool)
     {
         
-        account.changeAddress(11223344,_newCentralOffice, _pin);
+        account.changeCentralOffice(centralOffice,_newCentralOffice, _pin);
         ChangedCentralOffice(_newCentralOffice);
         return true;
+    }
+    
+    function getCentralOffice() returns(address)
+    {
+        return account.getAddress(centralOffice);
     }
     
  
