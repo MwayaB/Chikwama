@@ -8,11 +8,12 @@ An ERC20 compliant token
 
 pragma solidity ^0.4.13;
 
-import "Base.sol";
+import "./Base.sol";
+import "./Account.sol";
 
 
 
-contract ERC20Token is Base
+contract ERC20 is Base
 {
 
 /* Events */
@@ -26,16 +27,28 @@ string public name;
 string public symbol;
 uint8 public decimals;
 uint256 public totalSupply;
+Account account;
+
 
  /* This creates an array with all balances */
     mapping (address => uint256) public balanceOf;
     
     mapping (address => mapping (address => uint256)) public allowance;
+    
+/* This generates a public event on the blockchain that will notify clients of new Makwacha being issued*/
+    event Issue(address from, address to, uint256 value);
 
+/* This generates a public event on the blockchain that will notify clients */
+    event Transfer(address from, address to, uint256 value);
+    
+/* This notifies clients about the amount burnt */  
+    event Burn(address from, uint256 value);
+    
+    event ApprovedToIssue(address,address,uint);
 
 /* Funtions Public */
 
-    function ERC20Token()
+    function ERC20()
     {
         uint256 initialSupply = 0;      
         totalSupply = initialSupply;                        // Update total supply
@@ -50,7 +63,7 @@ uint256 public totalSupply;
     function issue(uint256 _fromId, uint256 _toId, uint _value) external returns (bool){
         require (_value < allowance[centralOffice][msg.sender]);     // Check allowance
         allowance[centralOffice][msg.sender] -= _value;
-        _issue(chikwama.getAddress(_toId),chikwama.getAddress(_fromId), _value);
+        _issue(account.getAddress(_toId),account.getAddress(_fromId), _value);
         return true;
     }
     
@@ -71,8 +84,8 @@ uint256 public totalSupply;
     /// @param _value the amount to send
     function transferFrom(address _from,uint256 _fromId, address _to, uint256 _toId, uint _value) external
         returns (bool) {
-        address from = chikwama.getAddress(_fromId);
-        address to = chikwama.getAddress(_toId);
+        address from = account.getAddress(_fromId);
+        address to = account.getAddress(_toId);
         require (_value < allowance[from][msg.sender]);     // Check allowance
         allowance[from][msg.sender] -= _value;
         _transfer(from,to, _value);
@@ -83,7 +96,7 @@ uint256 public totalSupply;
     /// @param _spender The address authorized to spend
     /// @param _value the max amount they can spend
     function approveIssuance(uint256 _spender, uint256 _value)public onlyCentralOffice returns (bool success) {
-        address spender = chikwama.getAddress(_spender);
+        address spender = account.getAddress(_spender);
         allowance[msg.sender][spender] = _value;
         ApprovedToIssue(msg.sender,spender,_value);
         return true;
@@ -111,12 +124,12 @@ uint256 public totalSupply;
     
     
   function burnFrom(uint256 _fromId, uint256 _value) public returns (bool success) {
-        require(balanceOf[chikwama.getAddress(_fromId)] >= _value);                // Check if the targeted balance is enough
-        require(_value<= allowance[chikwama.getAddress(_fromId)][msg.sender]);    // Check allowance
-        balanceOf[chikwama.getAddress(_fromId)] -= _value;                         // Subtract from the targeted balance
-        allowance[chikwama.getAddress(_fromId)][msg.sender] -= _value;             // Subtract from the sender's allowance
+        require(balanceOf[account.getAddress(_fromId)] >= _value);                // Check if the targeted balance is enough
+        require(_value<= allowance[account.getAddress(_fromId)][msg.sender]);    // Check allowance
+        balanceOf[account.getAddress(_fromId)] -= _value;                         // Subtract from the targeted balance
+        allowance[account.getAddress(_fromId)][msg.sender] -= _value;             // Subtract from the sender's allowance
         totalSupply -= _value;                              // Update totalSupply
-        Burn(chikwama.getAddress(_fromId), _value);
+        Burn(account.getAddress(_fromId), _value);
         return true;
     }
 }

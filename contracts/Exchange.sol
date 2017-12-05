@@ -1,5 +1,5 @@
 /*
-file:   Exchnage.sol
+file:   Exchange.sol
 
 
 An ERC20 compliant token with currency
@@ -9,10 +9,10 @@ exchange functionality
 
 pragma solidity ^0.4.13;
 
-import "Base.sol";
-import "ERC20.sol";
+import "./Base.sol";
+import "./ERC20.sol";
 
-contract Exchange
+contract Exchange is ERC20
 {
 
     uint256 public sizeOf;

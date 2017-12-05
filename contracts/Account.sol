@@ -1,8 +1,8 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.13;
 
 contract Account{
          
-     struct Account 
+     struct AccountStructure 
      {
         address add;
         bytes32 id;
@@ -13,7 +13,7 @@ contract Account{
     
     uint256 public accountCount;
     mapping(bytes32 => address) accounts;
-    mapping(address => mapping(bytes32 => Account)) chikwama;
+    mapping(address => mapping(bytes32 => AccountStructure)) chikwama;
     
     event CreateAccount(bytes32 NationalID, address ChikwamaAddress);
     
