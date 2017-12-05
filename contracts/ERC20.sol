@@ -48,12 +48,12 @@ Account account;
 
 /* Funtions Public */
 
-    function ERC20()
+    function ERC20(string tokenName, string tokenSymbol)
     {
         uint256 initialSupply = 0;      
         totalSupply = initialSupply;                        // Update total supply
-        name = "Makwacha";                                   // Set the name for display purposes
-        symbol = "MK";                               // Set the symbol for display purposes
+        name = tokenName;                                   // Set the name for display purposes
+        symbol = tokenSymbol;                               // Set the symbol for display purposes
         decimals = 0;
     }
         
@@ -61,8 +61,8 @@ Account account;
     } 
     
     function issue(uint256 _fromId, uint256 _toId, uint _value) external returns (bool){
-        require (_value < allowance[centralOffice][msg.sender]);     // Check allowance
-        allowance[centralOffice][msg.sender] -= _value;
+        require (_value < allowance[account.getAddress(centralOffice)][msg.sender]);     // Check allowance
+        allowance[account.getAddress(centralOffice)][msg.sender] -= _value;
         _issue(account.getAddress(_toId),account.getAddress(_fromId), _value);
         return true;
     }

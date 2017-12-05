@@ -9,7 +9,7 @@ exchange functionality
 
 pragma solidity ^0.4.13;
 
-import "./Base.sol";
+
 import "./ERC20.sol";
 
 contract Exchange is ERC20
@@ -27,6 +27,7 @@ contract Exchange is ERC20
     }
    
     Trade public trade;
+    
 
     mapping(address => uint256) public tradeBalance;
     
