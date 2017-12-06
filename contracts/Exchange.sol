@@ -2,21 +2,20 @@
 file:   Exchange.sol
 
 
-An ERC20 compliant token with currency
-exchange functionality 
+Exchange functionality for fiat pegged token 
 
 */
 
 pragma solidity ^0.4.13;
 
 
-import "./ERC20.sol";
+import "./FiatPeggedToken.sol";
 
 contract Exchange
 {
 
     uint256 public sizeOf;
-    ERC20 erc20;
+    FiatPeggedToken fiatPeggedToken;
 
     struct Trade
     {
@@ -39,6 +38,12 @@ contract Exchange
 
     event TradeResult(string);
 
+    //Constructor
+    
+    function Exchange(address _fiatPeggedContract)public{
+        fiatPeggedToken =  FiatPeggedToken(_fiatPeggedContract);
+    }
+    
     function etherBalanceOf(address _addr) public constant returns (uint) {
         return _addr.balance;
     }
@@ -79,7 +84,7 @@ contract Exchange
         trade.tokens = _tokens;
         
         //Check if valid trade
-        if(erc20.balanceOf(trade.trader)<_tokens + tradeBalance[trade.trader] || _tokens == 0)
+        if(fiatPeggedToken.balanceOf(trade.trader)<_tokens + tradeBalance[trade.trader] || _tokens == 0)
         return false;
         
          // Check if this is the first entry in the price book
@@ -103,7 +108,7 @@ contract Exchange
         
         if(_seller.send(tradeValue)){
         etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
-        erc20.transfer(_buyer, _tokens);
+        fiatPeggedToken.transfer(_buyer, _tokens);
         return true;
         }
         
@@ -135,7 +140,7 @@ contract Exchange
         return false;
     }
     
-    function  cancelTrade(bool _side, uint256 _price) returns(bool) 
+    function  cancelTrade(bool _side, uint256 _price)public returns(bool) 
     {
         for(uint x = 0; x<=sizeOf; x++)
         {

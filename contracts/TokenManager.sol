@@ -1,7 +1,7 @@
 /*
-file:   Base.sol
+file:   TokenManager.sol
 
-An basic contract furnishing inheriting contracts with ownership
+A basic contract for Managing fiat pegged tokens
 
 
 */
@@ -10,7 +10,7 @@ pragma solidity ^0.4.13;
 
 import "./Account.sol";
 
-contract Base
+contract TokenManager
 {
 
 
@@ -24,7 +24,7 @@ contract Base
 /*public event when central office changes*/
 event ChangedCentralOffice(address newCentralOffice);
 
-event CentralOfficeCreated(string msg);
+event CentralOfficeCreated(string created);
 /* Modifiers */
 
        // To throw call not made by centralOffice
@@ -35,7 +35,7 @@ event CentralOfficeCreated(string msg);
     
 /* Functions */
 
-    function Base(address _accountContract) { 
+    function TokenManager(address _accountContract)public { 
         centralOffice = 11223344; 
         account =  Account(_accountContract);
         account.createAccount(msg.sender,11223344,0,1234);
@@ -56,7 +56,7 @@ event CentralOfficeCreated(string msg);
         return true;
     }
     
-    function getCentralOffice() returns(address)
+    function getCentralOffice() public constant returns(address)
     {
         return account.getAddress(centralOffice);
     }

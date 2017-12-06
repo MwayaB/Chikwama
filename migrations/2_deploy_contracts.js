@@ -1,13 +1,16 @@
 var Account = artifacts.require("./Account.sol");
-var Base = artifacts.require("./Base.sol");
-var Erc20 = artifacts.require("./ERC20.sol");
+var TokenManager = artifacts.require("./TokenManager.sol");
+var tokenName = "digiRand";
+var tokenSymbol = "iZar";
+var FiatPeggedToken = artifacts.require("./FiatPeggedToken.sol");
 var Exchange = artifacts.require("./Exchange.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Account).then(function() {
-    return deployer.deploy(Base, Account.address);
+    return deployer.deploy(TokenManager, Account.address);
   });
 
-  deployer.deploy(Erc20);
-  deployer.deploy(Exchange);
+  deployer.deploy(FiatPeggedToken,tokenName,tokenSymbol).then(function() {
+    return deployer.deploy(Exchange, FiatPeggedToken.address);
+  });
 };

@@ -1,11 +1,11 @@
-var AccountId;
+
 
 App = {
  
 
   web3Provider: null,
   contracts: {},
-
+  accountId:null,
   init: function() {
     return App.initWeb3();
   },
@@ -41,13 +41,13 @@ App = {
     //  return App.getBalances();
     });
 
-    $.getJSON('ERC20.json', function(data){
+    $.getJSON('FiatPeggedToken.json', function(data){
 
-      var ERC20Artifact = data;
+      var FiatPeggedTokenArtifact = data;
 
-      App.contracts.ERC20 = TruffleContract(ERC20Artifact);
+      App.contracts.FiatPeggedToken = TruffleContract(FiatPeggedTokenArtifact);
 
-      App.contracts.ERC20.setProvider(App.web3Provider);
+      App.contracts.FiatPeggedToken.setProvider(App.web3Provider);
 
     });
 
@@ -73,7 +73,7 @@ App = {
 
   var id = parseInt($('#CHAccIdentity').val());
   var pin = parseInt($('#CHAccPin').val());
-  console.log(AccountId);
+  
   var chikwamaAccInstance;
   
        App.contracts.Account.deployed().then(function(instance) {
@@ -88,9 +88,24 @@ App = {
          if(length== 6) 
          {           
            if(parseInt(type) == 0){
-           window.open("central_office.html","_self");
-           AccountId = id;
-          }
+           App.setAccountId(id);
+           var centralOffice;
+           document.cookie = "userId="+App.accountId;
+           centralOffice = window.open("central_office.html");
+           centralOffice.document.onload(function(){            
+            centralOffice.document.getElementById('accountId').value = "test";
+           });
+           
+           
+          
+
+           };
+          
+          if(parseInt(type) == 1){
+            App.setAccountId(id);
+            
+            window.open("agent_account.html","_self");
+          };
          };
          if(length==7)alert('Invalid id or pin');
            }).catch(function(err) {
@@ -98,8 +113,13 @@ App = {
        });
 
  },
+ setAccountId: function(Id) {
+  App.accountId=Id;
+},
 
-   handleAccountCreation: function(){
+
+
+  handleAccountCreation: function(){
      event.preventDefault();
 
     // var account = App.getAccount(thisId);
@@ -133,15 +153,15 @@ App = {
     var allowance = parseInt($('#CHAccAllowance').val());
     var pin = parseInt($('#CHAccPin').val());
 
-    console.log('Agent ID ' + agentId + ' Allowance '+ allowance + 'by' + AccountId);
+    console.log('Agent ID ' + agentId + ' Allowance '+ allowance + 'by' + App.accountId);
 
     
-        var ERC20Instance;
+        var FiatPeggedTokenInstance;
         
-             App.contracts.ERC20.deployed().then(function(instance) {
-               ERC20Instance = instance;
+             App.contracts.FiatPeggedToken.deployed().then(function(instance) {
+               FiatPeggedTokenInstance = instance;
         
-               return ERC20Instance.approveIssuance( agentId, allowance);
+               return FiatPeggedTokenInstance.approveIssuance( agentId, allowance);
              }).then(function(result) {
                if(result)alert(agentId +'approved to issue ' + allowance);
                  }).catch(function(err) {
@@ -210,6 +230,7 @@ App = {
   }
 
 };
+
 
 $(function() {
   $(window).load(function() {

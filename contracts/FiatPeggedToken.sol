@@ -1,5 +1,5 @@
 /*
-file:   ERC20.sol
+file:   FiatPeggedToken.sol
 
 
 An ERC20 compliant token 
@@ -9,10 +9,9 @@ An ERC20 compliant token
 pragma solidity ^0.4.13;
 
 
-import "./Base.sol";
-import "./Account.sol";
 
-contract ERC20 
+
+contract FiatPeggedToken
 {
 
 /* Events */
@@ -27,12 +26,7 @@ string public symbol;
 uint8 public decimals;
 uint256 public totalSupply;
 uint256 public sizeOf;
-Account account;
-Base base;
-
-
-    
-
+address public admin_addr;
 
 
  /* This creates an array with all balances */
@@ -54,8 +48,10 @@ Base base;
      
 /* Funtions Public */
 
-    function ERC20(string tokenName, string tokenSymbol)public
+    function FiatPeggedToken(string tokenName, string tokenSymbol)public
     {
+      
+        
         uint256 initialSupply = 0;      
         totalSupply = initialSupply;                        // Update total supply
         name = tokenName;                                   // Set the name for display purposes
@@ -63,7 +59,7 @@ Base base;
         decimals = 0;
     }
     
-    function balanceOf(address _add) returns(uint)
+    function balanceOf(address _add)public constant returns(uint)
     {
         return balanceOf[_add];
     }
@@ -76,12 +72,13 @@ Base base;
     function() public payable {
     }
     
-    function issue(uint256 _fromId, uint256 _toId, uint _value)       external
+    function issue(address _from, address _to, uint _value)       external
         returns (bool)
     {
-        require (_value < allowance[base.getCentralOffice()][msg.sender]);     // Check allowance
-        allowance[base.getCentralOffice()][msg.sender] -= _value;
-        _issue(account.getAddress(_toId),account.getAddress(_fromId), _value);
+        
+        require (_value < allowance[admin_addr][msg.sender]);     // Check allowance
+        allowance[admin_addr][msg.sender] -= _value;
+        _issue(_to,_from, _value);
         return true;
     }
     
@@ -104,13 +101,11 @@ Base base;
     /// @param _from The address of the sender
     /// @param _to The address of the recipient
     /// @param _value the amount to send
-    function transferFrom(address _from,uint256 _fromId, address _to, uint256 _toId, uint _value) external
+    function transferFrom(address _from,address _to, uint _value) external
         returns (bool) {
-        address from = account.getAddress(_fromId);
-        address to = account.getAddress(_toId);
-        require (_value < allowance[from][msg.sender]);     // Check allowance
-        allowance[from][msg.sender] -= _value;
-        _transfer(from,to, _value);
+        require (_value < allowance[_from][msg.sender]);     // Check allowance
+        allowance[_from][msg.sender] -= _value;
+        _transfer(_from,_to, _value);
         return true;
     }
     
@@ -130,11 +125,12 @@ Base base;
         return true;
     }
     
-    function approveIssuance(uint256 _spender, uint256 _value)public returns (bool success) {
-        require(msg.sender == base.getCentralOffice());
-        address spender = account.getAddress(_spender);
-        allowance[msg.sender][spender] = _value;
-        ApprovedToIssue(msg.sender,spender,_value);
+    function approveIssuance(address _spender, uint256 _value, address _admin_addr)public returns (bool success) {
+        admin_addr = _admin_addr;
+        require(msg.sender == admin_addr);
+        
+        allowance[msg.sender][_spender] = _value;
+        ApprovedToIssue(msg.sender,_spender,_value);
         return true;
     }
     
@@ -150,13 +146,13 @@ Base base;
         
     
     
-    function burnFrom(uint256 _fromId, uint256 _value) public returns (bool success) {
-        require(balanceOf[account.getAddress(_fromId)] >= _value);                // Check if the targeted balance is enough
-        require(_value<= allowance[account.getAddress(_fromId)][msg.sender]);    // Check allowance
-        balanceOf[account.getAddress(_fromId)] -= _value;                         // Subtract from the targeted balance
-        allowance[account.getAddress(_fromId)][msg.sender] -= _value;             // Subtract from the sender's allowance
+    function burnFrom(address _from, uint256 _value) public returns (bool success) {
+        require(balanceOf[_from] >= _value);                // Check if the targeted balance is enough
+        require(_value<= allowance[_from][msg.sender]);    // Check allowance
+        balanceOf[_from] -= _value;                         // Subtract from the targeted balance
+        allowance[_from][msg.sender] -= _value;             // Subtract from the sender's allowance
         totalSupply -= _value;                              // Update totalSupply
-        Burn(account.getAddress(_fromId), _value);
+        Burn(_from, _value);
         return true;
     }
     

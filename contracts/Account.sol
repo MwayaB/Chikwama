@@ -1,6 +1,5 @@
 pragma solidity ^0.4.13;
 
-import "./Base.sol";
 
 contract Account{
          
@@ -10,9 +9,10 @@ contract Account{
         bytes32 id;
         uint8 accountType; //Account type 0 central office 1 Agent 2 EndUser
         bytes32 pin;
+
     }
     
-    Base base;
+
     
     uint256 public accountCount;
     mapping(bytes32 => address) accounts;
