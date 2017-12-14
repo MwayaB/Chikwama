@@ -9,8 +9,6 @@ An ERC20 compliant token
 pragma solidity ^0.4.13;
 
 
-
-
 contract FiatPeggedToken
 {
 
@@ -46,12 +44,19 @@ address public admin_addr;
     
      event ApprovedToIssue(address,address,uint);
      
+     
+    // To throw call not made by centralOffice
+    modifier onlyCentralOffice() {
+        require (msg.sender == admin_addr);
+        _;
+    }
+     
 /* Funtions Public */
 
     function FiatPeggedToken(string tokenName, string tokenSymbol)public
     {
       
-        
+        admin_addr = msg.sender;
         uint256 initialSupply = 0;      
         totalSupply = initialSupply;                        // Update total supply
         name = tokenName;                                   // Set the name for display purposes
@@ -125,10 +130,7 @@ address public admin_addr;
         return true;
     }
     
-    function approveIssuance(address _spender, uint256 _value, address _admin_addr)public returns (bool success) {
-        admin_addr = _admin_addr;
-        require(msg.sender == admin_addr);
-        
+    function approveIssuance(address _spender, uint256 _value)onlyCentralOffice public returns (bool success) {
         allowance[msg.sender][_spender] = _value;
         ApprovedToIssue(msg.sender,_spender,_value);
         return true;

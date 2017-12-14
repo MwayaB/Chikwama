@@ -5,59 +5,74 @@ contract Account{
          
      struct AccountStructure 
      {
-        address add;
+        string seed;
+        address [100] addresses;
         bytes32 id;
         uint8 accountType; //Account type 0 central office 1 Agent 2 EndUser
         bytes32 pin;
+        uint addcount;
 
     }
     
 
     
     uint256 public accountCount;
-    mapping(bytes32 => address) accounts;
-    mapping(address => mapping(bytes32 => AccountStructure)) account;
+    mapping(bytes32 => AccountStructure) account;
     
-    event CreateAccount(bytes32 NationalID, address accountAddress);
+    event CreateAccount(uint nationalId);
 
     
-    function createAccount(address _add, uint256 _id, uint8 _type, uint256 _pin) public returns(bool)
+    function createAccount(uint256 _id, uint8 _type, uint256 _pin) public returns(bool)
     {
-        if (accounts[keccak256(_id)]==0x0)
+        if(account[keccak256(_id)].addcount==0)
         {
-            accounts[keccak256(_id)] = _add;
-            account[_add][keccak256(_id)].add = _add;
-            account[_add][keccak256(_id)].id = keccak256(_id);
-            account[_add][keccak256(_id)].accountType = _type;
-            account[_add][keccak256(_id)].pin = keccak256(_pin);
+            account[keccak256(_id)].id = keccak256(_id);
+            account[keccak256(_id)].accountType = _type;
+            account[keccak256(_id)].pin = keccak256(_pin);
+
             accountCount++;
-            CreateAccount(keccak256(_id),_add);
+            CreateAccount(_id);
             return true;
         }
         
-        else return false;
-
+        return false;
+    
+    }
+    
+    function addSeed(uint256 _id,string _seed) public returns(bool)
+    {
+        account[keccak256(_id)].seed=_seed;
+        return true;
+    }
+    
+    function addAddress(uint256 _id,address _add) public returns(bool)
+    {
+        account[keccak256(_id)].addresses[account[keccak256(_id)].addcount] = _add;
+        account[keccak256(_id)].addcount++;
+        return true;
+    }
+    
+    function getAddCount(uint256 _id) public constant returns(uint)
+    {
+        return account[keccak256(_id)].addcount;
     }
     
     function deleteAccount(uint256 _id) internal returns(bool)
     {
-        address _add = accounts[keccak256(_id)];
-        delete account[_add][keccak256(_id)];
-        delete accounts[keccak256(_id)];
+        delete account[keccak256(_id)];
         return true;
     }
     
-    function getAddress(uint256 _id) public constant returns(address) {
-        address _add = accounts[keccak256(_id)];
-      
-        return account[_add][keccak256(_id)].add;
-    
+    function getAddresses(uint256 _id, uint _index)public constant returns(address)
+    {
+        return account[keccak256(_id)].addresses[_index];
+          
     }
     
+    
     function getType(uint256 _id) internal constant returns(uint){
-        address _add = accounts[keccak256(_id)];
         
-        return account[_add][keccak256(_id)].accountType;
+        return account[keccak256(_id)].accountType;
     }
     
     
@@ -69,28 +84,26 @@ contract Account{
     }
     
     function _checkPin(uint256 _id, uint256 _pin) internal constant returns(bool){
-        address _add = accounts[keccak256(_id)];
-        if(account[_add][keccak256(_id)].pin==keccak256(_pin))return true;
+        if(account[keccak256(_id)].pin==keccak256(_pin))return true;
     }
     
     function changePin(uint256 _id, uint256 _pin, uint256 _newPin) public returns(bool)
     {
-        address _add = accounts[keccak256(_id)];
-        if(account[_add][keccak256(_id)].pin == keccak256(_pin))
+        if(account[keccak256(_id)].pin == keccak256(_pin))
         {
-            account[_add][keccak256(_id)].pin = keccak256(_newPin);
+            account[keccak256(_id)].pin = keccak256(_newPin);
             return true;
         }
         else return false;
     }
     
-    function changeCentralOffice(uint256 _id, address _new, uint256 _pin) external returns(bool)
+    function changeCentralOffice(uint256 _id,uint _new, uint256 _pin) external returns(bool)
     {
         if(_checkPin(_id,_pin)== true)
         {
-          uint8 accountType = account[getAddress(_id)][keccak256(_id)].accountType;
+          uint8 accountType = account[keccak256(_id)].accountType;
           deleteAccount(_id);
-          createAccount(_new,_id,accountType,1234);
+          createAccount(_new,accountType,1234);
           return true;
         }
         

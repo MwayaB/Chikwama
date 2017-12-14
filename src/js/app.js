@@ -1,239 +1,1123 @@
+                      var web3 =  new Web3();
+                      var global_keystore;
+                      var addresses;
+
+                      var accountAdd = '0x4e44591bf2460a0e4c69e313839acaefded9df19';
+                      var tokenManagerAdd = '0x18fd659d67402c1e40119250dd1c3e2d3c931130';
+                      var fiatPeggedTokenAdd = '0x84bb35350109cb29b5e52dbc182e7340a0ec8513';
+                      var exchangeAdd = '0xcc3348653d15b1e1c834d2f7fa1a843edd343588';
 
 
-App = {
- 
+                      var accountabi = [
+                        {
+                            "constant": false,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_type",
+                                    "type": "uint8"
+                                },
+                                {
+                                    "name": "_pin",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "createAccount",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": false,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_pin",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_newPin",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "changePin",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": true,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "getAddCount",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": false,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_new",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_pin",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "changeCentralOffice",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": false,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_seed",
+                                    "type": "string"
+                                }
+                            ],
+                            "name": "addSeed",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": false,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_add",
+                                    "type": "address"
+                                }
+                            ],
+                            "name": "addAddress",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": true,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_pin",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "checkPin",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "bool"
+                                },
+                                {
+                                    "name": "",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": true,
+                            "inputs": [],
+                            "name": "accountCount",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "constant": true,
+                            "inputs": [
+                                {
+                                    "name": "_id",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_index",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "getAddresses",
+                            "outputs": [
+                                {
+                                    "name": "",
+                                    "type": "address"
+                                }
+                            ],
+                            "payable": false,
+                            "type": "function"
+                        },
+                        {
+                            "anonymous": false,
+                            "inputs": [
+                                {
+                                    "indexed": false,
+                                    "name": "nationalId",
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "CreateAccount",
+                            "type": "event"
+                        }
+                    ]
 
-  web3Provider: null,
-  contracts: {},
-  accountId:null,
-  init: function() {
-    return App.initWeb3();
-  },
+                    var tokenManagerabi = [
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "contractBalance",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_newCentralOffice",
+                            "type": "uint256"
+                          },
+                          {
+                            "name": "_pin",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "changeCentralOffice",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "centralOffice",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "inputs": [
+                          {
+                            "name": "_accountContract",
+                            "type": "address"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "constructor"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "newCentralOffice",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "ChangedCentralOffice",
+                        "type": "event"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "created",
+                            "type": "string"
+                          }
+                        ],
+                        "name": "CentralOfficeCreated",
+                        "type": "event"
+                      }
+                    ]
 
-  initWeb3: function() {
-    // Initialize web3 and set the provider to the testRPC.
-    if (typeof web3 !== 'undefined') {
-      App.web3Provider = web3.currentProvider;
-      web3 = new Web3(web3.currentProvider);
-    } else {
-      // set the provider you want from Web3.providers
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
-      web3 = new Web3(App.web3Provider);
-    }
+                    var fiatPeggedTokenabi = [
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "name",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "string"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_spender",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "approve",
+                        "outputs": [
+                          {
+                            "name": "success",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "sizeOf",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "_addr",
+                            "type": "address"
+                          }
+                        ],
+                        "name": "etherBalanceOf",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "totalSupply",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_from",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_to",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "transferFrom",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "decimals",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint8"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "_add",
+                            "type": "address"
+                          }
+                        ],
+                        "name": "balanceOf",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_from",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "burnFrom",
+                        "outputs": [
+                          {
+                            "name": "success",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_spender",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "approveIssuance",
+                        "outputs": [
+                          {
+                            "name": "success",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "symbol",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "string"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_to",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "transfer",
+                        "outputs": [],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "admin_addr",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "address"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_from",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_to",
+                            "type": "address"
+                          },
+                          {
+                            "name": "_value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "issue",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "",
+                            "type": "address"
+                          },
+                          {
+                            "name": "",
+                            "type": "address"
+                          }
+                        ],
+                        "name": "allowance",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "inputs": [
+                          {
+                            "name": "tokenName",
+                            "type": "string"
+                          },
+                          {
+                            "name": "tokenSymbol",
+                            "type": "string"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "constructor"
+                      },
+                      {
+                        "payable": true,
+                        "type": "fallback"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "from",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "to",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "Transfer",
+                        "type": "event"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "from",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "Burn",
+                        "type": "event"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "from",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "to",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "value",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "Issue",
+                        "type": "event"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "ApprovedToIssue",
+                        "type": "event"
+                      }
+                    ]
 
-    return App.initContract();
-  },
+                    var exchangeabi = [
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "sizeOf",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "_addr",
+                            "type": "address"
+                          }
+                        ],
+                        "name": "etherBalanceOf",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "trade",
+                        "outputs": [
+                          {
+                            "name": "trader",
+                            "type": "address"
+                          },
+                          {
+                            "name": "side",
+                            "type": "bool"
+                          },
+                          {
+                            "name": "price",
+                            "type": "uint256"
+                          },
+                          {
+                            "name": "tokens",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "priceBook",
+                        "outputs": [
+                          {
+                            "name": "trader",
+                            "type": "address"
+                          },
+                          {
+                            "name": "side",
+                            "type": "bool"
+                          },
+                          {
+                            "name": "price",
+                            "type": "uint256"
+                          },
+                          {
+                            "name": "tokens",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_side",
+                            "type": "bool"
+                          },
+                          {
+                            "name": "_price",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "cancelTrade",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_price",
+                            "type": "uint256"
+                          },
+                          {
+                            "name": "_tokens",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "buy",
+                        "outputs": [
+                          {
+                            "name": "success",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": false,
+                        "inputs": [
+                          {
+                            "name": "_price",
+                            "type": "uint256"
+                          },
+                          {
+                            "name": "_tokens",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "sell",
+                        "outputs": [
+                          {
+                            "name": "success",
+                            "type": "bool"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "constant": true,
+                        "inputs": [
+                          {
+                            "name": "",
+                            "type": "address"
+                          }
+                        ],
+                        "name": "tradeBalance",
+                        "outputs": [
+                          {
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "function"
+                      },
+                      {
+                        "inputs": [
+                          {
+                            "name": "_fiatPeggedContract",
+                            "type": "address"
+                          }
+                        ],
+                        "payable": false,
+                        "type": "constructor"
+                      },
+                      {
+                        "payable": true,
+                        "type": "fallback"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "name": "",
+                            "type": "string"
+                          }
+                        ],
+                        "name": "TradeResult",
+                        "type": "event"
+                      }
+                    ]
+                
 
-  initContract: function() {
-    $.getJSON('Account.json', function(data) {
-      // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      var AccountArtifact = data;
-      
-     
-      
+                
+                      function setWeb3Provider(keystore) {
+                        var web3Provider = new HookedWeb3Provider({
+                          host: "http://localhost:8545",
+                          transaction_signer: keystore
+                        });
+                
+                        web3.setProvider(web3Provider);
+                      }
+                
+                      function newAddresses(password) {
+                        /*
+                        if (password == '') {
+                          password = prompt('Enter password to retrieve addresses', 'Password');
+                        }*/
+                
+                        var numAddr = 3
+                
+                        global_keystore.keyFromPassword(password, function(err, pwDerivedKey) {
+                
+                        global_keystore.generateNewAddress(pwDerivedKey, numAddr);
+                
+                        addresses = global_keystore.getAddresses();
+                
+                        document.getElementById('sendFrom').innerHTML = ''
+                        for (var i=0; i<addresses.length; ++i) {
+                          document.getElementById('sendFrom').innerHTML += '<option value="' + addresses[i] + '">' + addresses[i] + '</option>'
 
-      App.contracts.Account = TruffleContract(AccountArtifact);
-     
-      // Set the provider for our contract.
-      App.contracts.Account.setProvider(App.web3Provider);
+                        }
+                
+                        getBalances();
+                      })
+                      }
+                
+                      function getBalances() {
+                        
+                        addresses = global_keystore.getAddresses();
+                        document.getElementById('addr').innerHTML = 'Retrieving addresses...'
+                
+                        async.map(addresses, web3.eth.getBalance, function(err, balances) {
+                          async.map(addresses, web3.eth.getTransactionCount, function(err, nonces) {
+                            document.getElementById('addr').innerHTML = ''
+                            for (var i=0; i<addresses.length; ++i) {
+                              document.getElementById('addr').innerHTML += '<div>' + addresses[i] + ' (Bal: ' + (balances[i] / 1.0e18) + ' ETH, Nonce: ' + nonces[i] + ')' + '</div>'
+                            }
+                          })
+                        })
+                
+                      }
+                
+                      function setSeed() {
+                        var password = "";
+                
+                      lightwallet.keystore.createVault({
+                        password: password,
+                        seedPhrase: document.getElementById('seed').value,
+                        //random salt 
+                        hdPathString: "m/0'/0'/0'"
+                      }, function (err, ks) {
+                
+                        global_keystore = ks
+                
+                        
+                        newAddresses(password);
+                        setWeb3Provider(global_keystore);
+                        
+                        
+                        })
+                      }
 
-      // Use our contract to retieve and mark the adopted pets. //not sure about this
-    //  return App.getBalances();
-    });
+                      function setCookie()
+                      {
+                        
+                          var seed = document.getElementById('seed').value;
+                          document.cookie =  seed;
+                          console.log(document.cookie);
+                          setSeed();
+                          window.open("indexLogin.html","_self");
+                          
 
-    $.getJSON('FiatPeggedToken.json', function(data){
+                      }
+                
+                      function newWallet() {
+                        var extraEntropy = "prompt('Please enter some random text','entropy')";
+                        var randomSeed = lightwallet.keystore.generateRandomSeed(extraEntropy);
+                
+                        var infoString = 'Your new wallet seed is: "' + randomSeed + 
+                          '". Please write it down on paper or in a password manager, you will need it to access your wallet. Do not let anyone see this seed or they can take your Ether. ' +
+                          'Please enter a password to encrypt your seed while in the browser.'
+                        var password = prompt(infoString, 'Password');
+                
+                
+                      lightwallet.keystore.createVault({
+                        password: password,
+                        seedPhrase: randomSeed,
+                        //random salt 
+                        hdPathString: "m/0'/0'/0'"
+                      }, function (err, ks) {
+                
+                        global_keystore = ks
+                                
+                        newAddresses(password);
+                        setWeb3Provider(global_keystore);
+                        getBalances();
+                        })
+                      }
+                
+                      function showSeed() {
+                        var password = prompt('Enter password to show your seed. Do not let anyone else see your seed.', 'Password');
+                
+                        global_keystore.keyFromPassword(password, function(err, pwDerivedKey) {
+                        var seed = global_keystore.getSeed(pwDerivedKey);
+                        alert('Your seed is: "' + seed + '". Please write it down.');
+                        });
+                      }
 
-      var FiatPeggedTokenArtifact = data;
+                      function deleteCookie()
+                      {
+                        document.cookie = "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                      }
 
-      App.contracts.FiatPeggedToken = TruffleContract(FiatPeggedTokenArtifact);
+                      function populateAddresses()
+                      {  
+                            console.log(document.cookie);
+                            document.getElementById('seed').value = document.cookie;                  
+                            setSeed();                     
 
-      App.contracts.FiatPeggedToken.setProvider(App.web3Provider);
+                      }
+                
 
-    });
+                      function login()
+                      {
+                        
+                        var fromAddr = document.getElementById('sendFrom').value
+                        var contractAddr = accountAdd
+                        var abi = accountabi
+                        var contract = web3.eth.contract(abi).at(contractAddr)
+                        var functionName = 'checkPin'
+                        var id = parseInt($('#CHAccIdentity').val());
+                        var pin = parseInt($('#CHAccPin').val());
+                        var args = [id,pin]
+                        var valueEth = 0
+                        var value = parseFloat(valueEth)*1.0e18
+                        var gasPrice = 50000000000
+                        var gas = 4541592
+                        args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                        var callback = function(err, txhash) {
+                          console.log('error: ' + err)
+                          console.log('txhash: ' + txhash)
 
-    return App.bindEvents();
-  },
+                          var msg = txhash.toString();
+                            var length = msg.length;
+                            var type = msg.substring(length - 1, length);
 
-/*  bindEvents: function() {
-    $(document).on('click', '#transferButton', App.handleTransfer);
-  },*/
-  bindEvents: function() {
-     $(document).on('click', '#createAccount', App.handleAccountCreation);
-     $(document).on('click','#logIn', App.handleLogin);
-     $(document).on('click','#Approve', App.handleIssuanceApproval);
-     
-   },
+                            if (length == 6) {
+                                
+                                if (parseInt(type) == 0) {
 
+                                    window.open("centralOffice.html", "_self");
 
- /*handleAccountCreation: function(){
-   alert('Account Created!');
- },*/
- handleLogin: function(){
-  event.preventDefault();
+                                };
 
-  var id = parseInt($('#CHAccIdentity').val());
-  var pin = parseInt($('#CHAccPin').val());
-  
-  var chikwamaAccInstance;
-  
-       App.contracts.Account.deployed().then(function(instance) {
-         chikwamaAccInstance = instance;
-  
-      return chikwamaAccInstance.checkPin(id, pin);
-       }).then(function(result) {
-        var msg = result.toString();
-        var length = msg.length;
-        var type = msg.substring(length-1,length);
+                                if (parseInt(type) == 1) {
+                                    App.setAccountId(id);
 
-         if(length== 6) 
-         {           
-           if(parseInt(type) == 0){
-           App.setAccountId(id);
-           var centralOffice;
-           document.cookie = "userId="+App.accountId;
-           centralOffice = window.open("central_office.html");
-           centralOffice.document.onload(function(){            
-            centralOffice.document.getElementById('accountId').value = "test";
-           });
-           
-           
-          
+                                    window.open("agentAccount.html", "_self");
+                                };
+                            };
+                            if (length == 7) alert('Invalid id or pin');
+                            
+                        }
+                        args.push(callback)
+                        contract[functionName].apply(this, args)
 
-           };
-          
-          if(parseInt(type) == 1){
-            App.setAccountId(id);
+                      }
+
+                      $('.nav-item').click(function(){
+                        var this_item = $(this).attr("data-item");
+                        $('.content-item').hide();
+                        $('.item-' + this_item).fadeIn();
+                    });
+
+                    function createAccount()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = accountAdd
+                      var abi = accountabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'createAccount'
+                      var id = document.getElementById('CHAccIdentity').value
+                      var type = document.getElementById('CHAccType').value
+                      var pin = document.getElementById('createPin').value
+                      console.log(id+','+pin+','+type)
+                      var args = JSON.parse('[' + id +','+ type +','+ pin + ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('account created!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+                    }
+
+                    function approveIssuance()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'approveIssuance'
+                      var add = document.getElementById('CHAccAddress').value
+                      var amount = document.getElementById('CHAccAllowance').value
+                      console.log(add+','+amount)
+                      var args = JSON.parse('['+'"'+ add +'"'+','+ amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('Issaunce allowance approved!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+                    }
+                
             
-            window.open("agent_account.html","_self");
-          };
-         };
-         if(length==7)alert('Invalid id or pin');
-           }).catch(function(err) {
-         console.log(err.message);
-       });
-
- },
- setAccountId: function(Id) {
-  App.accountId=Id;
-},
-
-
-
-  handleAccountCreation: function(){
-     event.preventDefault();
-
-    // var account = App.getAccount(thisId);
-    var x =0;
-     var id = parseInt($('#CHAccIdentity').val());
-     var type = parseInt($('#CHAccType').val());
-    var address = web3.eth.accounts[x];
-     x++;
-     var pin = parseInt($('#CHAccPin').val());
-   
-
-  console.log('Create Account' + id + ' pin ' + pin + ' Type ' + type+ 'Account Count' + x);
-
-     var AccInstance;
-
-     App.contracts.Account.deployed().then(function(instance) {
-       AccInstance = instance;
-
-       return AccInstance.createAccount( address, id, type, pin);
-     }).then(function(result) {
-       if(result)alert('Account Created!');
-         }).catch(function(err) {
-       console.log(err.message);
-     });
-   },
-
-  handleIssuanceApproval: function(){
-    event.preventDefault();
-
-    var agentId = parseInt($('#CHAccIdentity').val());
-    var allowance = parseInt($('#CHAccAllowance').val());
-    var pin = parseInt($('#CHAccPin').val());
-
-    console.log('Agent ID ' + agentId + ' Allowance '+ allowance + 'by' + App.accountId);
-
-    
-        var FiatPeggedTokenInstance;
-        
-             App.contracts.FiatPeggedToken.deployed().then(function(instance) {
-               FiatPeggedTokenInstance = instance;
-        
-               return FiatPeggedTokenInstance.approveIssuance( agentId, allowance);
-             }).then(function(result) {
-               if(result)alert(agentId +'approved to issue ' + allowance);
-                 }).catch(function(err) {
-               console.log(err.message);
-             });
-
-    
-        
-
-  },
-
-  handleTransfer: function() {
-    event.preventDefault();
-
-    var amount = parseInt($('#TTTransferAmount').val());
-    var toAddress = $('#TTTransferAddress').val();
-
-    console.log('Transfer ' + amount + ' TT to ' + toAddress);
-
-    var tutorialTokenInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-
-      var account = accounts[0];
-
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
-
-        return tutorialTokenInstance.transfer(toAddress, amount, {from: account});
-      }).then(function(result) {
-        alert('Transfer Successful!');
-        return App.getBalances();
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    });
-  },
-
-  getBalances: function(adopters, account) {
-    console.log('Getting balances...');
-
-    var tutorialTokenInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-
-      var account = accounts[0];
-
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
-
-        return tutorialTokenInstance.balanceOf(account);
-      }).then(function(result) {
-        balance = result.c[0];
-
-        $('#TTBalance').text(balance);
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    });
-  }
-
-};
-
-
-$(function() {
-  $(window).load(function() {
-    App.init();
-  });
-});
+                

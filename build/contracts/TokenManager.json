@@ -4,11 +4,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getCentralOffice",
+      "name": "contractBalance",
       "outputs": [
         {
           "name": "",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -19,7 +19,7 @@
       "inputs": [
         {
           "name": "_newCentralOffice",
-          "type": "address"
+          "type": "uint256"
         },
         {
           "name": "_pin",
@@ -31,19 +31,6 @@
         {
           "name": "",
           "type": "bool"
-        }
-      ],
-      "payable": false,
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "contractBalance",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
         }
       ],
       "payable": false,
@@ -78,7 +65,7 @@
         {
           "indexed": false,
           "name": "newCentralOffice",
-          "type": "address"
+          "type": "uint256"
         }
       ],
       "name": "ChangedCentralOffice",
@@ -97,17 +84,17 @@
       "type": "event"
     }
   ],
-  "unlinked_binary": "0x6060604052341561000f57600080fd5b604051602080610475833981016040528080519150505b62ab4130600081815560018054600160a060020a031916600160a060020a038581169190911791829055169163c29503ce913391906104d281604051602001526040517c010000000000000000000000000000000000000000000000000000000063ffffffff8716028152600160a060020a039094166004850152602484019290925260ff1660448301526064820152608401602060405180830381600087803b15156100d257600080fd5b6102c65a03f115156100e357600080fd5b50505060405180519050507f289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc701313060405160208082526016908201527f43656e7472616c204f66666963652063726561746564000000000000000000006040808301919091526060909101905180910390a15b505b610310806101656000396000f300606060405263ffffffff60e060020a6000350416633a3365ef81146100455780637f99e369146100745780638b7afe2e146100aa578063cb9095db146100cf575b600080fd5b341561005057600080fd5b6100586100f4565b604051600160a060020a03909116815260200160405180910390f35b341561007f57600080fd5b610096600160a060020a036004351660243561016b565b604051901515815260200160405180910390f35b34156100b557600080fd5b6100bd6102cf565b60405190815260200160405180910390f35b34156100da57600080fd5b6100bd6102de565b60405190815260200160405180910390f35b600154600080549091600160a060020a03169063b93f9b0a90836040516020015260405160e060020a63ffffffff84160281526004810191909152602401602060405180830381600087803b151561014b57600080fd5b6102c65a03f1151561015c57600080fd5b50505060405180519150505b90565b600154600080549091600160a060020a03169063b93f9b0a90836040516020015260405160e060020a63ffffffff84160281526004810191909152602401602060405180830381600087803b15156101c257600080fd5b6102c65a03f115156101d357600080fd5b50505060405180519050600160a060020a031633600160a060020a03161415156101fc57600080fd5b60015460008054600160a060020a039092169163a795f21591869086906040516020015260405160e060020a63ffffffff86160281526004810193909352600160a060020a0390911660248301526044820152606401602060405180830381600087803b151561026b57600080fd5b6102c65a03f1151561027c57600080fd5b50505060405180519050507f811e0b5caeff57d7316e8cba5b15a89a09cb2afaab00de01d11c3a29b937fe3483604051600160a060020a03909116815260200160405180910390a15060015b5b92915050565b600160a060020a033016315b90565b600054815600a165627a7a72305820f495a8e04b06f6d8754aa303960cf8f1ba32064254ae664c0bf18114ca5db79c0029",
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b6040516020806103df833981016040528080519150505b62ab4130600081815560018054600160a060020a031916600160a060020a038581169190911791829055169163031193c0916104d281604051602001526040517c010000000000000000000000000000000000000000000000000000000063ffffffff8616028152600481019390935260ff90911660248301526044820152606401602060405180830381600087803b15156100c157600080fd5b6102c65a03f115156100d257600080fd5b50505060405180519050507f289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc701313060405160208082526016908201527f43656e7472616c204f66666963652063726561746564000000000000000000006040808301919091526060909101905180910390a15b505b61028b806101546000396000f300606060405263ffffffff60e060020a6000350416638b7afe2e811461003a578063bcb4b1c51461005f578063cb9095db1461008c575b600080fd5b341561004557600080fd5b61004d6100b1565b60405190815260200160405180910390f35b341561006a57600080fd5b6100786004356024356100cd565b604051901515815260200160405180910390f35b341561009757600080fd5b61004d610259565b60405190815260200160405180910390f35b73ffffffffffffffffffffffffffffffffffffffff3016315b90565b60015460008054909173ffffffffffffffffffffffffffffffffffffffff169063f4c12a4d9083806040516020015260405160e060020a63ffffffff851602815260048101929092526024820152604401602060405180830381600087803b151561013757600080fd5b6102c65a03f1151561014857600080fd5b5050506040518051905073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561018b57600080fd5b6001546000805473ffffffffffffffffffffffffffffffffffffffff909216916331cd9da491869086906040516020015260405160e060020a63ffffffff8616028152600481019390935260248301919091526044820152606401602060405180830381600087803b15156101ff57600080fd5b6102c65a03f1151561021057600080fd5b50505060405180519050507f942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b8360405190815260200160405180910390a15060015b5b92915050565b600054815600a165627a7a72305820e478af54e6a563acca0b735d534f458d87decb286de6999140963f35e687dada0029",
   "networks": {
-    "1512559750249": {
+    "1513101868159": {
       "events": {
-        "0x811e0b5caeff57d7316e8cba5b15a89a09cb2afaab00de01d11c3a29b937fe34": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
           "anonymous": false,
           "inputs": [
             {
               "indexed": false,
               "name": "newCentralOffice",
-              "type": "address"
+              "type": "uint256"
             }
           ],
           "name": "ChangedCentralOffice",
@@ -127,18 +114,18 @@
         }
       },
       "links": {},
-      "address": "0x8e30e805da67e29c54ffa1f67a75c188ee22d496",
-      "updated_at": 1512559825232
+      "address": "0x8eb5ff28883edf2f73e16c6db45eab449549e247",
+      "updated_at": 1513101953608
     },
-    "1512567976346": {
+    "1513102939327": {
       "events": {
-        "0x811e0b5caeff57d7316e8cba5b15a89a09cb2afaab00de01d11c3a29b937fe34": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
           "anonymous": false,
           "inputs": [
             {
               "indexed": false,
               "name": "newCentralOffice",
-              "type": "address"
+              "type": "uint256"
             }
           ],
           "name": "ChangedCentralOffice",
@@ -158,18 +145,18 @@
         }
       },
       "links": {},
-      "address": "0xd32a300a3c9663646cb7dd734fedf1e699831dac",
-      "updated_at": 1512568028106
+      "address": "0x00f07905e2c6adebf17458ff4ed5f36ef707620e",
+      "updated_at": 1513102985979
     },
-    "1512575751321": {
+    "1513107455654": {
       "events": {
-        "0x811e0b5caeff57d7316e8cba5b15a89a09cb2afaab00de01d11c3a29b937fe34": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
           "anonymous": false,
           "inputs": [
             {
               "indexed": false,
               "name": "newCentralOffice",
-              "type": "address"
+              "type": "uint256"
             }
           ],
           "name": "ChangedCentralOffice",
@@ -189,10 +176,196 @@
         }
       },
       "links": {},
-      "address": "0x5f4f43a7f3de95aa54c1c5a39d7a6871dadfc084",
-      "updated_at": 1512575806886
+      "address": "0x18550c08caea3b37ec2e7157e3da5c00a21ee57c",
+      "updated_at": 1513107595201
+    },
+    "1513154673847": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa1a1e02ccb1c87e5106522206b60dbc8f4228bb8",
+      "updated_at": 1513154928434
+    },
+    "1513155477752": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xca013193222e2c08c918dbe8c9ee8cced963ae2d",
+      "updated_at": 1513155757899
+    },
+    "1513177428019": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x052792d2c4ca1b51482573d1ed3603a9a5f32e25",
+      "updated_at": 1513177512197
+    },
+    "1513190938384": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xff2c8e811ffc644f4509ef1c434f0822bea88566",
+      "updated_at": 1513190984266
+    },
+    "1513191244167": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xdd8522739c931954c56e3d58b025808df666fcb4",
+      "updated_at": 1513191281069
+    },
+    "1513243774007": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x18fd659d67402c1e40119250dd1c3e2d3c931130",
+      "updated_at": 1513243815789
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1512575806886
+  "updated_at": 1513243815789
 }

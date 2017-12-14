@@ -22,23 +22,22 @@ contract TokenManager
 /* Events */
 
 /*public event when central office changes*/
-event ChangedCentralOffice(address newCentralOffice);
+event ChangedCentralOffice(uint newCentralOffice);
 
 event CentralOfficeCreated(string created);
 /* Modifiers */
-
-       // To throw call not made by centralOffice
-    modifier onlyCentralOffice() {
-        require (msg.sender == account.getAddress(centralOffice));
+  modifier onlyCentralOffice() {
+        require (msg.sender == account.getAddresses(centralOffice,0));
         _;
     }
+     
     
 /* Functions */
 
     function TokenManager(address _accountContract)public { 
         centralOffice = 11223344; 
         account =  Account(_accountContract);
-        account.createAccount(msg.sender,11223344,0,1234);
+        account.createAccount(11223344,0,1234);
         CentralOfficeCreated("Central Office created");
     }
 
@@ -47,7 +46,7 @@ event CentralOfficeCreated(string created);
     }
 
     // Change the owner of a central office
-    function changeCentralOffice(address _newCentralOffice,uint _pin)
+    function changeCentralOffice(uint _newCentralOffice,uint _pin)
         public onlyCentralOffice returns (bool)
     {
         
@@ -56,12 +55,9 @@ event CentralOfficeCreated(string created);
         return true;
     }
     
-    function getCentralOffice() public constant returns(address)
-    {
-        return account.getAddress(centralOffice);
-    }
+   
     
  
 }
 
-/* End of Base */
+/* End of TokenManager */
