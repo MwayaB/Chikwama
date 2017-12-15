@@ -2,10 +2,10 @@
                       var global_keystore;
                       var addresses;
 
-                      var accountAdd = '0x4e44591bf2460a0e4c69e313839acaefded9df19';
-                      var tokenManagerAdd = '0x18fd659d67402c1e40119250dd1c3e2d3c931130';
-                      var fiatPeggedTokenAdd = '0x84bb35350109cb29b5e52dbc182e7340a0ec8513';
-                      var exchangeAdd = '0xcc3348653d15b1e1c834d2f7fa1a843edd343588';
+                      var accountAdd = '0x21eb60118c47c074ec5900f8efaf28eea82769ee';
+                      var tokenManagerAdd = '0x2c4cd9eab0f0a42840ca35a3d4210642bbde88f1';
+                      var fiatPeggedTokenAdd = '0xb6e032767faef8a7a697b6a98a5497d192454a25';
+                      var exchangeAdd = '0x3b45c89e2e427e63243316fc5aa97d3c1589972c';
 
 
                       var accountabi = [
@@ -1000,6 +1000,20 @@
                         });
                       }
 
+                      function sendEth() {
+                        
+                        var fromAddr = document.getElementById('sendFrom').value
+                        var toAddr = '"'+document.getElementById('sendTo').value+'"'
+                        var valueEth = document.getElementById('sendValueAmount').value
+                        var value = parseFloat(valueEth)*1.0e18
+                        var gasPrice = 18000000000
+                        var gas = 50000
+                        web3.eth.sendTransaction({from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas}, function (err, txhash) {
+                          console.log('error: ' + err)
+                          console.log('txhash: ' + txhash)
+                        })
+                      }
+
                       function deleteCookie()
                       {
                         document.cookie = "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -1051,6 +1065,11 @@
 
                                     window.open("agentAccount.html", "_self");
                                 };
+                                if (parseInt(type) == 2) {
+                                  App.setAccountId(id);
+
+                                  window.open("userAccount.html", "_self");
+                              };
                             };
                             if (length == 7) alert('Invalid id or pin');
                             
@@ -1118,6 +1137,140 @@
                       args.push(callback)
                       contract[functionName].apply(this, args)
                     }
+
+                    function handleApprove()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'approve'
+                      var add = document.getElementById('agentAddress').value
+                      var amount = document.getElementById('withdrawalAmount').value
+                      console.log(add+','+amount)
+                      var args = JSON.parse('['+'"'+ add +'"'+','+ amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('withdrawal approved!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+
+                    }
+
+                    function issueZAR()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'issue'
+                      var add = document.getElementById('issueAddress').value
+                      var amount = document.getElementById('issueAmount').value
+                      console.log(add+','+amount)
+                      var args = JSON.parse('['+'"'+ add +'"'+','+ amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('Issaunce succesful!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+
+                    }
+
+                    function handleTransfer()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'transfer'
+                      var addTo = document.getElementById('sendiZarAddress').value
+                      var amount = document.getElementById('sendiZarAmount').value
+                      console.log(addTo +','+amount)
+                      var args = JSON.parse('['+'"'+ addTo +'",'+ amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('Transfer Successful!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+                    }
+
+                    function handleTransferFrom()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'transferFrom'
+                      var addFrom = document.getElementById('transferFrom').value
+                      var addTo = document.getElementById('transferTo').value
+                      var amount = document.getElementById('transferAmount').value
+                      console.log(addFrom+','+ addTo +','+amount)
+                      var args = JSON.parse('['+'"'+ addFrom +'",'+'"'+ addTo +'"'+','+ amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('Transfer Successful!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+                    }
+
+                    function handleBurnFrom()
+                    {
+                      var fromAddr = document.getElementById('sendFrom').value
+                      var contractAddr = fiatPeggedTokenAdd
+                      var abi = fiatPeggedTokenabi
+                      var contract = web3.eth.contract(abi).at(contractAddr)
+                      var functionName = 'burnFrom'
+                      var addFrom = document.getElementById('withdrawFrom').value
+                      var amount = document.getElementById('withdrawAmount').value
+                      console.log(addFrom+ ','+amount)
+                      var args = JSON.parse('['+'"'+ addFrom +'",'+amount+ ']')
+                      var valueEth = 0
+                      var value = parseFloat(valueEth)*1.0e18
+                      var gasPrice = 50000000000
+                      var gas = 4541592
+                      args.push({from: fromAddr, value: value, gasPrice: gasPrice, gas: gas})
+                      var callback = function(err, txhash) {
+                        console.log('error: ' + err)
+                        console.log('txhash: ' + txhash)
+                        if(txhash)
+                        {alert('Withdrawal succcessful!')}
+                      }
+                      args.push(callback)
+                      contract[functionName].apply(this, args)
+                    }
+
                 
             
                 

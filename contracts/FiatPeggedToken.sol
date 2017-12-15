@@ -77,13 +77,13 @@ address public admin_addr;
     function() public payable {
     }
     
-    function issue(address _from, address _to, uint _value)       external
+    function issue(address _to, uint _value)       external
         returns (bool)
     {
         
-        require (_value < allowance[admin_addr][msg.sender]);     // Check allowance
+        require (_value <= allowance[admin_addr][msg.sender]);     // Check allowance
         allowance[admin_addr][msg.sender] -= _value;
-        _issue(_to,_from, _value);
+        _issue(_to,msg.sender, _value);
         return true;
     }
     
@@ -114,7 +114,7 @@ address public admin_addr;
         return true;
     }
     
-    function transfer(address _to, uint256 _value)public{
+    function transfer(address _to, uint256 _value)public returns (bool){
         _transfer(msg.sender,_to,_value);
     }
 

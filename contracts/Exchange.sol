@@ -10,7 +10,6 @@ pragma solidity ^0.4.13;
 
 
 import "./FiatPeggedToken.sol";
-
 contract Exchange
 {
 
@@ -37,6 +36,10 @@ contract Exchange
     mapping (address => uint) etherBalance;
 
     event TradeResult(string);
+    
+    event ExchangeResult(string);
+    
+    event Alert(string);
 
     //Constructor
     
@@ -58,8 +61,9 @@ contract Exchange
         trade.price = _price;
         trade.tokens = _tokens;
         
+        uint tradeValue = _tokens*_price;
         //Check if valid trade
-        if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(_price*_tokens)|| _tokens==0)
+        if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(tradeValue)|| _tokens==0)
         return false;
           
           // Check if this is the first entry in the price book
@@ -70,8 +74,12 @@ contract Exchange
             return true;
         }
         
-        etherBalance[trade.trader] += (_price*_tokens);
-        setTrade(trade);
+        
+        if(address(this).send(tradeValue))
+        {
+            etherBalance[trade.trader] += (tradeValue);
+            setTrade(trade);
+        }
     
         return true;
     }
@@ -97,7 +105,11 @@ contract Exchange
         }
         
         tradeBalance[trade.trader] += _tokens;
-        setTrade(trade);
+        if(fiatPeggedToken.transfer(address(this),_tokens))
+        {
+            tradeBalance[trade.trader] += _tokens;
+            setTrade(trade);
+        }
  
         return true;
     }
@@ -109,6 +121,7 @@ contract Exchange
         if(_seller.send(tradeValue)){
         etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
         fiatPeggedToken.transfer(_buyer, _tokens);
+        ExchangeResult('exchange done');
         return true;
         }
         
@@ -124,7 +137,10 @@ contract Exchange
         {
             if(tradeBalance[msg.sender]>=_tokens){
                 tradeBalance[msg.sender]-=_tokens;
-                return true;
+                if(fiatPeggedToken.transfer(msg.sender,_tokens))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -134,7 +150,10 @@ contract Exchange
         if(etherBalance[msg.sender]>= _amount)
         {
             etherBalance[msg.sender]-=_amount;
-            return true;
+            if(msg.sender.send(_amount))
+            {
+                return true;
+            }
         }
         
         return false;
