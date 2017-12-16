@@ -62,26 +62,19 @@ contract Exchange
         //Check if valid trade
         if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(tradeValue)|| _tokens==0)
         return false;
-          
-          // Check if this is the first entry in the price book
-        if(sizeOf ==0)
-        {
-            priceBook[sizeOf] = trade;
-            sizeOf++;
-            return true;
-        }
+         
         
         
         if(address(this).send(tradeValue))
         {
               // Check if this is the first entry in the price book
-        if(sizeOf ==0)
-        {
-            etherBalance[trade.trader] += (tradeValue);
-            priceBook[sizeOf] = trade;
-            sizeOf++;
-            return true;
-        }
+            if(sizeOf ==0)
+            {
+                etherBalance[trade.trader] += (tradeValue);
+                priceBook[sizeOf] = trade;
+                sizeOf++;
+                return true;
+            }
         
             etherBalance[trade.trader] += (tradeValue);
             setTrade(trade);
@@ -107,13 +100,13 @@ contract Exchange
         if(fiatPeggedToken.transfer(address(this),_tokens))
         {
             // Check if this is the first entry in the price book
-        if(sizeOf ==0)
-        {
-            tradeBalance[trade.trader] += _tokens;
-            priceBook[sizeOf] = trade;
-            sizeOf++;
-            return true;
-        }
+            if(sizeOf ==0)
+            {
+                tradeBalance[trade.trader] += _tokens;
+                priceBook[sizeOf] = trade;
+                sizeOf++;
+                return true;
+            }
         
             tradeBalance[trade.trader] += _tokens;
             setTrade(trade);
