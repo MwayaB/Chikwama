@@ -26,7 +26,6 @@ contract Exchange
     }
    
     Trade public trade;
-    
 
     mapping(address => uint256) public tradeBalance;
     
@@ -39,8 +38,6 @@ contract Exchange
     
     event ExchangeResult(string);
     
-    event Alert(string);
-
     //Constructor
     
     function Exchange(address _fiatPeggedContract)public{
@@ -61,7 +58,7 @@ contract Exchange
         trade.price = _price;
         trade.tokens = _tokens;
         
-        uint tradeValue = _tokens*_price;
+        uint tradeValue = (_tokens*_price)* 1 ether;
         //Check if valid trade
         if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(tradeValue)|| _tokens==0)
         return false;
@@ -77,6 +74,15 @@ contract Exchange
         
         if(address(this).send(tradeValue))
         {
+              // Check if this is the first entry in the price book
+        if(sizeOf ==0)
+        {
+            etherBalance[trade.trader] += (tradeValue);
+            priceBook[sizeOf] = trade;
+            sizeOf++;
+            return true;
+        }
+        
             etherBalance[trade.trader] += (tradeValue);
             setTrade(trade);
         }
@@ -95,7 +101,12 @@ contract Exchange
         if(fiatPeggedToken.balanceOf(trade.trader)<_tokens + tradeBalance[trade.trader] || _tokens == 0)
         return false;
         
-         // Check if this is the first entry in the price book
+         
+        
+        
+        if(fiatPeggedToken.transfer(address(this),_tokens))
+        {
+            // Check if this is the first entry in the price book
         if(sizeOf ==0)
         {
             tradeBalance[trade.trader] += _tokens;
@@ -104,9 +115,6 @@ contract Exchange
             return true;
         }
         
-        tradeBalance[trade.trader] += _tokens;
-        if(fiatPeggedToken.transfer(address(this),_tokens))
-        {
             tradeBalance[trade.trader] += _tokens;
             setTrade(trade);
         }
@@ -116,7 +124,7 @@ contract Exchange
     
     //transfer tokens from seller to buyer and ether from buyer to seller
     function make(uint256 _tokens,uint256 _price, address _buyer, address _seller)internal returns (bool success)
-    {   uint tradeValue = _tokens*_price;
+    {   uint tradeValue = (_tokens*_price) * 1 ether;
         
         if(_seller.send(tradeValue)){
         etherBalance[_buyer] =etherBalance[_buyer]-tradeValue;
@@ -131,7 +139,7 @@ contract Exchange
     
     function withdraw(bool _side, uint256 _tokens, uint256 _price) internal returns(bool)
     {
-        uint256 _amount = _tokens * _price;
+        uint256 tradeValue = (_tokens * _price) * 1 ether;
         //check if seller, then withdraw amount from trade contract
         if(_side)
         {
@@ -147,10 +155,10 @@ contract Exchange
         
         
         //if buyer, then withdraw amount from trade contract
-        if(etherBalance[msg.sender]>= _amount)
+        if(etherBalance[msg.sender]>= tradeValue)
         {
-            etherBalance[msg.sender]-=_amount;
-            if(msg.sender.send(_amount))
+            etherBalance[msg.sender]-= tradeValue;
+            if(msg.sender.send(tradeValue))
             {
                 return true;
             }
