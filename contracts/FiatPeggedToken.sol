@@ -70,6 +70,12 @@ address public admin_addr;
     }
     
     
+    
+    function allowanceOf(address _spender, address _approver)public constant returns(uint)
+    {
+        return allowance[_approver][_spender];
+    }
+    
     function etherBalanceOf(address _addr) public constant returns (uint) {
         return _addr.balance;
     }
@@ -108,7 +114,7 @@ address public admin_addr;
     /// @param _value the amount to send
     function transferFrom(address _from,address _to, uint _value) external
         returns (bool) {
-        require (_value < allowance[_from][msg.sender]);     // Check allowance
+        require (_value <= allowance[_from][msg.sender]);     // Check allowance
         allowance[_from][msg.sender] -= _value;
         _transfer(_from,_to, _value);
         return true;
@@ -127,6 +133,13 @@ address public admin_addr;
         returns (bool success) {
         
         allowance[msg.sender][_spender] = _value;
+        return true;
+    }
+    
+    function setAllowance(address _spender, address _approver, uint256 _value)external
+        returns (bool success)
+    {
+        allowance[_approver][_spender] = _value;
         return true;
     }
     
