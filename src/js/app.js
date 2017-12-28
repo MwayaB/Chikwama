@@ -943,6 +943,11 @@ var exchangeabi = [
         "indexed": false,
         "name": "",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "",
+        "type": "uint256"
       }
     ],
     "name": "TradeResult",

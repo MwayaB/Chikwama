@@ -519,8 +519,39 @@
       "links": {},
       "address": "0xce839747840aa56dfeafca5e5d5bd8236b7db89f",
       "updated_at": 1513977179610
+    },
+    "1514297621994": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xbea5d089e6999a9f8cf0351dd648a1a53f6c8dc3",
+      "updated_at": 1514297719415
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1513977179610
+  "updated_at": 1514297719415
 }

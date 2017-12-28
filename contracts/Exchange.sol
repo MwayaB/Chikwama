@@ -29,12 +29,12 @@ contract Exchange
 
     mapping(address => uint256) public tradeBalance;
     
-    mapping(uint256 => Trade) public priceBook;
+    Trade[] public priceBook;
 
      // Mapping for ether ownership of accumulated deposits, sales and refunds.
     mapping (address => uint) public etherBalance;
 
-    event TradeResult(string);
+    event TradeResult(string,uint);
     
     event ExchangeResult(string);
     
@@ -74,7 +74,7 @@ contract Exchange
                 if(sizeOf ==0)
                 {
                     etherBalance[trade.trader] += (tradeValue);
-                    priceBook[sizeOf] = trade;
+                    priceBook.push(trade);
                     sizeOf++;
                     return true;
                 }
@@ -107,7 +107,7 @@ contract Exchange
                 if(sizeOf ==0)
                 {
                     tradeBalance[trade.trader] += _tokens;
-                    priceBook[sizeOf] = trade;
+                    priceBook.push(trade);
                     sizeOf++;
                     return true;
                 }
@@ -169,12 +169,22 @@ contract Exchange
     
     function  cancelTrade(bool _side, uint256 _price)public returns(bool) 
     {
-        for(uint x = 0; x<=sizeOf; x++)
+        for(uint x = 0; x<=sizeOf-1; x++)
         {
             if(priceBook[x].side == _side && priceBook[x].trader ==  msg.sender && priceBook[x].price == _price)
-            {
+            {   
+                
                 delete priceBook[x];
+                sizeOf--;
+                uint deleted = x;
                 return withdraw(_side,priceBook[x].tokens,_price);
+                if (deleted >= priceBook.length) return;
+                for(uint i=deleted;i<=priceBook.length-1; i++)
+                {
+                    priceBook[i] = priceBook[i+1];
+                    
+                }
+                
                 
             }
             
@@ -186,13 +196,14 @@ contract Exchange
     {
       
         
-        for(uint x = 0; x<=sizeOf; x++)
+        for(uint x = 0; x<=sizeOf-1; x++)
         {
+            uint deleted = x;
            
             //Check if the trade is a buy or sell and try and make the trade against trades already in the price book else add the trade to the price book
                 if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price && priceBook[x].side == _trade.side && priceBook[x].tokens == _trade.tokens)
                     {
-                        TradeResult("trade already exists");
+                        TradeResult("trade already exists",0);
                         return;
                     }
                 else if(priceBook[x].side==true && _trade.side==false && priceBook[x].price <= _trade.price)
@@ -202,26 +213,44 @@ contract Exchange
                              
                              make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
                              priceBook[x].tokens = (priceBook[x].tokens-_trade.tokens);
-                             TradeResult("buy executed");
+                             TradeResult("buy executed",priceBook[x].tokens);
                              return;
                         }
                        else if(priceBook[x].tokens<_trade.tokens)
                        {
-                           make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
+                           make(priceBook[x].tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
                            _trade.tokens=(_trade.tokens-priceBook[x].tokens);
+                           TradeResult("buy partially executed",priceBook[x].tokens);
                            delete priceBook[x];
+                           sizeOf--;
+                            deleted = x;
+                            if (deleted >= sizeOf) return;
+                            for(uint i=deleted;i<=priceBook.length-1; i++)
+                            {
+                                priceBook[i] = priceBook[i+1];
+                                
+                            }
                            setTrade(_trade);
                        }
                        else if(_trade.tokens==priceBook[x].tokens)
                        {
                             make(_trade.tokens,priceBook[x].price,_trade.trader,priceBook[x].trader);
                            delete priceBook[x];
-                           TradeResult("buy executed");
+                           sizeOf--;
+                            deleted = x;
+                            TradeResult("buy executed",priceBook[x].tokens);
+                            if (deleted >= sizeOf) return;
+                            for(i=deleted;i<=priceBook.length-1; i++)
+                            {
+                                priceBook[i] = priceBook[i+1];
+                                
+                            }
+                           
                            return;
                        }
                         else if(_trade.tokens==0)
                        {
-                           TradeResult("buy executed");
+                           TradeResult("buy executed",0);
                            return;
                        }
                         
@@ -234,27 +263,45 @@ contract Exchange
                              
                              make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
                              priceBook[x].tokens = (priceBook[x].tokens-_trade.tokens);
-                             TradeResult("Sell executed");
+                             TradeResult("Sell executed",priceBook[x].tokens);
                              return;
                         }
                        else if(priceBook[x].tokens<_trade.tokens)
                        {
                            make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
                            _trade.tokens=(_trade.tokens-priceBook[x].tokens);
+                           TradeResult("buy partially executed",priceBook[x].tokens);
                            delete priceBook[x];
+                           sizeOf--;
+                            deleted = x;
+                            if (deleted >= sizeOf) return;
+                            for(i=deleted;i<=priceBook.length-1; i++)
+                            {
+                                priceBook[i] = priceBook[i+1];
+                                
+                            }
+                           
                            setTrade(_trade);
                        }
                        else if(_trade.tokens==priceBook[x].tokens)
                        {
                             make(_trade.tokens,priceBook[x].price,priceBook[x].trader,_trade.trader);
                            delete priceBook[x];
-                           TradeResult("Sell executed");
+                           TradeResult("Sell executed",priceBook[x].tokens);
+                           sizeOf--;
+                            deleted = x;
+                            if (deleted >= sizeOf) return;
+                            for(i=deleted;i<=priceBook.length-1; i++)
+                            {
+                                priceBook[i] = priceBook[i+1];
+                                
+                            }
                            return;
                            
                        }
                         else if(_trade.tokens==0)
                        {
-                           TradeResult("Sell executed");
+                           TradeResult("Sell executed",0);
                            return;
                        }
                     
@@ -265,15 +312,11 @@ contract Exchange
            
            
      
-            priceBook[x-1] = _trade;
+            priceBook.push(_trade);
             sizeOf++;
-           TradeResult("trade added");
+           TradeResult("trade added you still need",_trade.tokens);
            return;
               
     }
-    
-
-
-
     
 }
