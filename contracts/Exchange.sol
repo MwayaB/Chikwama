@@ -22,6 +22,7 @@ contract Exchange
         bool side; //true = sell, false =buy 
         uint256 price;
         uint256 tokens;
+        uint256 validity;
         
     }
    
@@ -59,6 +60,7 @@ contract Exchange
         trade.side = false;
         trade.price = _price;
         trade.tokens = _tokens;
+        trade.validity = now + 14 * 1 days;
         
         uint tradeValue = (_tokens*_price)* 1 ether;
         //Check if valid trade
@@ -96,6 +98,7 @@ contract Exchange
         trade.side = true;
         trade.price = _price;
         trade.tokens = _tokens;
+        trade.validity = now + 14 * 1 days;
         
       
        
@@ -136,14 +139,14 @@ contract Exchange
     }
     
     
-    function withdraw(bool _side, uint256 _tokens, uint256 _price) internal returns(bool)
+    function withdraw(address _trader, bool _side, uint256 _tokens, uint256 _price) internal returns(bool)
     {
         uint256 tradeValue = (_tokens * _price) * 1 ether;
         //check if seller, then withdraw amount from trade contract
         if(_side)
         {
-            if(tradeBalance[msg.sender]>=_tokens){
-                tradeBalance[msg.sender]-=_tokens;
+            if(tradeBalance[_trader]>=_tokens){
+                tradeBalance[_trader]-=_tokens;
                 return true;
             }
             else
@@ -153,9 +156,9 @@ contract Exchange
         }
         else
         {
-            if(etherBalance[msg.sender]>= tradeValue){
-                etherBalance[msg.sender]-= tradeValue;
-                msg.sender.transfer(tradeValue);
+            if(etherBalance[_trader]>= tradeValue){
+                etherBalance[_trader]-= tradeValue;
+                _trader.transfer(tradeValue);
                 return true;
             }
             else
@@ -177,7 +180,7 @@ contract Exchange
                 delete priceBook[x];
                 sizeOf--;
                 uint deleted = x;
-                return withdraw(_side,priceBook[x].tokens,_price);
+                return withdraw(msg.sender,_side,priceBook[x].tokens,_price);
                 if (deleted >= priceBook.length) return;
                 for(uint i=deleted;i<=priceBook.length-1; i++)
                 {
@@ -198,7 +201,9 @@ contract Exchange
         
         for(uint x = 0; x<=sizeOf-1; x++)
         {
-            uint deleted = x;
+            uint deleted;
+            
+            if(_trade.validity>=now){
            
             //Check if the trade is a buy or sell and try and make the trade against trades already in the price book else add the trade to the price book
                 if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price && priceBook[x].side == _trade.side && priceBook[x].tokens == _trade.tokens)
@@ -304,13 +309,25 @@ contract Exchange
                            TradeResult("Sell executed",0);
                            return;
                        }
-                    
                 }
                 
                
+            }else
+            {
+                delete priceBook[x];
+                sizeOf--;
+                deleted = x;
+                withdraw(priceBook[x].trader,priceBook[x].side,priceBook[x].tokens,priceBook[x].price);
+                if (deleted >= priceBook.length) return;
+                for(i=deleted;i<=priceBook.length-1; i++)
+                {
+                    priceBook[i] = priceBook[i+1];
+                    
+                }
+                setTrade(_trade);
             }
            
-           
+        }
      
             priceBook.push(_trade);
             sizeOf++;
@@ -318,5 +335,9 @@ contract Exchange
            return;
               
     }
+    
+
+
+
     
 }

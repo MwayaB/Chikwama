@@ -550,8 +550,101 @@
       "links": {},
       "address": "0xbea5d089e6999a9f8cf0351dd648a1a53f6c8dc3",
       "updated_at": 1514297719415
+    },
+    "1514992189758": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xda45895d8611f70e669057c4fb15973a62d891e2",
+      "updated_at": 1514992254007
+    },
+    "1514996681650": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xd59c46461488dfd0afc6af11edf72221c0b452b0",
+      "updated_at": 1514996707536
+    },
+    "1515002604149": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xefea2a6e9b32d86e76fa4eec119ce2911dde4b0f",
+      "updated_at": 1515002639340
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1514297719415
+  "updated_at": 1515002639340
 }

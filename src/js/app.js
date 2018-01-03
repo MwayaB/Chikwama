@@ -2,10 +2,10 @@ var web3 = new Web3();
 var global_keystore;
 var addresses;
 
-var accountAdd = '0xc3ef361066fab071301f11cff27bcf93f8250984';
-var tokenManagerAdd = '0xce839747840aa56dfeafca5e5d5bd8236b7db89f';
-var fiatPeggedTokenAdd = '0xc2f2613dd5f7c36b5e9a451b63a6252c1d7a4760';
-var exchangeAdd = '0xf890d4e11661d65b0311d8dcd1b7e74dd19f4ab1';
+var accountAdd = '0xcf1b5be50b251db1066409383df4684515811f87';
+var tokenManagerAdd = '0xefea2a6e9b32d86e76fa4eec119ce2911dde4b0f';
+var fiatPeggedTokenAdd = '0xdaa4aca2f88cdc3f5822d689e5b94cce3f44aa4d';
+var exchangeAdd = '0xcfd170df675bf6246e6e3c393428291dd9e07396';
 
 
 var accountabi = [

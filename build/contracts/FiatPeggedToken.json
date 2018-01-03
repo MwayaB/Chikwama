@@ -1774,8 +1774,278 @@
       "links": {},
       "address": "0x7ca943fb22f7bca3b478562bdd56e43bb8d9c091",
       "updated_at": 1514297719399
+    },
+    "1514992189758": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Burn",
+          "type": "event"
+        },
+        "0x4b2682685b046a3dae8e75ff49b82fa703e366056a43c6a791411011134f4f5d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Issue",
+          "type": "event"
+        },
+        "0x0e99d19ff03e10575cc9e4a665fc40cd99d88582e602d8817a1183760346f813": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "ApprovedToIssue",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x1aec28021a9c8357b4b9d57e0d7683da7fb08a51",
+      "updated_at": 1514992253994
+    },
+    "1514996681650": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Burn",
+          "type": "event"
+        },
+        "0x4b2682685b046a3dae8e75ff49b82fa703e366056a43c6a791411011134f4f5d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Issue",
+          "type": "event"
+        },
+        "0x0e99d19ff03e10575cc9e4a665fc40cd99d88582e602d8817a1183760346f813": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "ApprovedToIssue",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6f6a410e56db85e18461a837832fbec81b32f037",
+      "updated_at": 1514996707541
+    },
+    "1515002604149": {
+      "events": {
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event"
+        },
+        "0xcc16f5dbb4873280815c1ee09dbd06736cffcc184412cf7a71a0fdb75d397ca5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Burn",
+          "type": "event"
+        },
+        "0x4b2682685b046a3dae8e75ff49b82fa703e366056a43c6a791411011134f4f5d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "Issue",
+          "type": "event"
+        },
+        "0x0e99d19ff03e10575cc9e4a665fc40cd99d88582e602d8817a1183760346f813": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "ApprovedToIssue",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xdaa4aca2f88cdc3f5822d689e5b94cce3f44aa4d",
+      "updated_at": 1515002639333
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1514484971118
+  "updated_at": 1515019065223
 }
