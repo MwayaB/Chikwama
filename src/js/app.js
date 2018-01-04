@@ -785,6 +785,10 @@ var exchangeabi = [
       {
         "name": "tokens",
         "type": "uint256"
+      },
+      {
+        "name": "validity",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -814,6 +818,10 @@ var exchangeabi = [
       },
       {
         "name": "tokens",
+        "type": "uint256"
+      },
+      {
+        "name": "validity",
         "type": "uint256"
       }
     ],

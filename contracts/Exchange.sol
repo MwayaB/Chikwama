@@ -203,7 +203,7 @@ contract Exchange
         {
             uint deleted;
             
-            if(_trade.validity>=now){
+            if(priceBook[x].validity>=now){
            
             //Check if the trade is a buy or sell and try and make the trade against trades already in the price book else add the trade to the price book
                 if(priceBook[x].trader==_trade.trader && priceBook[x].price == _trade.price && priceBook[x].side == _trade.side && priceBook[x].tokens == _trade.tokens)
