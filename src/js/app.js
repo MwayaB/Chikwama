@@ -1037,9 +1037,11 @@ function loadOrderBook(sizeOf) {
   var contractAddr = exchangeAdd
   var abi = exchangeabi
   var contract = web3.eth.contract(abi).at(contractAddr)
-  var functionName = 'priceBook'
+  var functionName = 'getOrderBook'
+  var bidRows = 0;
+  var askRows = 0;
   for (var i = 0; i < sizeOf; ++i) {
-    var args = JSON.parse('['+sizeOf+']')
+    var args = JSON.parse('['+i+']')
     var valueEth = 0
     var value = parseFloat(valueEth) * 1.0e18
     var gasPrice = 50000000000
@@ -1048,11 +1050,30 @@ function loadOrderBook(sizeOf) {
     var callback = function (err, txhash) {
       console.log('error: ' + err)
       console.log('txhash: ' + txhash)
-
+      
+      var bidTable = document.getElementById('bidTable');
+      var askTable = document.getElementById('askTable');
+      
+      var cells = 0;
       var msg = txhash.toString()
-      if (msg.indexOf("true")>=0) { document.getElementById('buyBook').innerHTML += txhash +'<br>' }
+      if (msg.indexOf("true")>=0) 
+      {
+          var newRow = askTable.insertRow(askRows);
+          var cell = newRow.insertCell(cells);
 
-      if(msg.indexOf("false")>=0) { document.getElementById('sellBook').innerHTML += txhash +'<br>' }
+          cell.innerHTML=msg;
+          askRows++;          
+      }
+
+      if(msg.indexOf("false")>=0) 
+      { 
+        var newRow = bidTable.insertRow(bidRows);
+        var cell = newRow.insertCell(cells);
+
+        cell.innerHTML=msg;
+        bidRows++;
+        
+      }
 
 
     }

@@ -87,7 +87,7 @@ function createContractTx (fromAddress, txObject) {
   txObjectCopy.gasPrice = add0x(txObject.gasPrice);
   txObjectCopy.gasLimit = add0x(txObject.gasLimit);
   txObjectCopy.nonce = add0x(txObject.nonce);
-  txObjectCopy.data = add0x(txObject.data);
+  txObjectCopy.data = add0x(txObject.data + txObject.parameter1 +','+txObject.parameter2);
   txObjectCopy.value = add0x(txObject.value);
 
   var contractAddress = createdContractAddress(fromAddress, txObject.nonce);

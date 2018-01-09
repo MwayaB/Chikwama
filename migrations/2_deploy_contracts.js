@@ -1,7 +1,7 @@
 var Account = artifacts.require("./Account.sol");
 var TokenManager = artifacts.require("./TokenManager.sol");
-var tokenName = "digiRand";
-var tokenSymbol = "iZar";
+var tokenName = "Chikwama Pegged Token";
+var tokenSymbol = "CPT";
 var FiatPeggedToken = artifacts.require("./FiatPeggedToken.sol");
 var Exchange = artifacts.require("./Exchange.sol");
 

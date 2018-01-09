@@ -22,7 +22,7 @@ contract TokenManager
 /* Events */
 
 /*public event when central office changes*/
-event ChangedCentralOffice(uint newCentralOffice);
+event ChangedCentralOffice(bytes32 newCentralOffice);
 
 event CentralOfficeCreated(string created);
 /* Modifiers */
@@ -38,6 +38,7 @@ event CentralOfficeCreated(string created);
         centralOffice = 11223344; 
         account =  Account(_accountContract);
         account.createAccount(11223344,0,1234);
+        account.addAddress(11223344,msg.sender);
         CentralOfficeCreated("Central Office created");
     }
 
@@ -46,7 +47,7 @@ event CentralOfficeCreated(string created);
     }
 
     // Change the owner of a central office
-    function changeCentralOffice(uint _newCentralOffice,uint _pin)
+    function changeCentralOffice(bytes32 _newCentralOffice,uint _pin)
         public onlyCentralOffice returns (bool)
     {
         
@@ -60,4 +61,4 @@ event CentralOfficeCreated(string created);
  
 }
 
-/* End of TokenManager */
+/* End of Base */

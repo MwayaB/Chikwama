@@ -5,8 +5,8 @@ contract Account{
          
      struct AccountStructure 
      {
-        string seed;
-        address [100] addresses;
+        bytes32 seed;
+        address [] addresses;
         bytes32 id;
         uint8 accountType; //Account type 0 central office 1 Agent 2 EndUser
         bytes32 pin;
@@ -19,10 +19,10 @@ contract Account{
     uint256 public accountCount;
     mapping(bytes32 => AccountStructure) account;
     
-    event CreateAccount(uint nationalId);
+    event CreateAccount(bytes32 nationalId);
 
     
-    function createAccount(uint256 _id, uint8 _type, uint256 _pin) public returns(bool)
+    function createAccount(bytes32 _id, uint8 _type, uint256 _pin) public returns(bool)
     {
         if(account[keccak256(_id)].addcount==0)
         {
@@ -39,10 +39,17 @@ contract Account{
     
     }
     
-    function addSeed(uint256 _id,string _seed) public returns(bool)
+    function addSeed(uint256 _id,string _seed) public returns(bool success)
     {
-        account[keccak256(_id)].seed=_seed;
+        account[keccak256(_id)].seed= keccak256(_seed);
         return true;
+    }
+    
+    function checkSeed(uint256 _id,string _seed) public constant returns(bool success)
+    {
+        if(account[keccak256(_id)].seed== keccak256(_seed))return true;
+        return false;
+        
     }
     
     function addAddress(uint256 _id,address _add) public returns(bool)
@@ -52,7 +59,7 @@ contract Account{
         return true;
     }
     
-    function getAddCount(uint256 _id) public constant returns(uint)
+    function addCount(uint256 _id) public constant returns(uint)
     {
         return account[keccak256(_id)].addcount;
     }
@@ -97,7 +104,7 @@ contract Account{
         else return false;
     }
     
-    function changeCentralOffice(uint256 _id,uint _new, uint256 _pin) external returns(bool)
+    function changeCentralOffice(uint256 _id,bytes32 _new, uint256 _pin) external returns(bool)
     {
         if(_checkPin(_id,_pin)== true)
         {

@@ -45,7 +45,11 @@ contract Exchange
         fiatPeggedToken =  FiatPeggedToken(_fiatPeggedContract);
     }
     
-
+    function getOrderBook(uint _index)returns(bool,uint, uint,uint)
+    {
+        return(priceBook[_index].side,priceBook[_index].price,priceBook[_index].tokens,priceBook[_index].validity);
+    }
+    
     
     function etherBalanceOf(address _addr) public constant returns (uint) {
         return _addr.balance;

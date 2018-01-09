@@ -16,8 +16,8 @@ var code = '6060604052610381806100136000396000f30060606040526000357c010000000000
 
 // You can change this to your seed
 // and the nonce of the first address
-var seed = 'unhappy nerve cancel reject october fix vital pulse cash behind curious bicycle'
-var nonce = 2
+var seed = 'barely zoo infant trophy scan possible derive derive cat immune coil barrel'
+var nonce = 0
 
 lightwallet.keystore.deriveKeyFromPassword('mypassword', function(err, pwDerivedKey) {
 
