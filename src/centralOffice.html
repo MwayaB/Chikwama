@@ -138,14 +138,14 @@
                                 <div class="intro-box left">
                                         <i class="icons"><a href="index.html" class="etl-icon icon-layers mbr-iconfont mbr-iconfont-features4" style="color: rgb(192, 163, 117);"></a></i>
                                         <div class="content">
-                                            <h4 class="h-white">Transfer money</h4>
+                                            <h4 class="h-white">Approve Agent to issue mCPT</h4>
                                             <p class="mbr-section-text lead">Full-screen intro with background image, color overlay, icons and a subscribe form.</p>
                                         </div>
                                 </div>
                                 <div class="intro-box left">
                                         <i class="icons"><a href="index.html" class="etl-icon icon-expand mbr-iconfont mbr-iconfont-features4" style="color: rgb(192, 163, 117);"></a></i>
                                         <div class="content">
-                                            <h4 class="h-white">Trade on the exchange</h4>
+                                            <h4 class="h-white">Create New Accounts</h4>
                                             <p class="mbr-section-text lead">Lorem ipsum dolor sit amet consec tetur elit amet voluptas accusamus dolorum veritatis ea odio dolor emque.</p>
                                         </div>
                                 </div>
@@ -153,7 +153,7 @@
                              </div>
 
                         </div>
-                        <div id="addr"></div>
+                        <div id="addr" style="background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"></div><br>
                         <div><select id="sendFrom" class="form-control light"><option value="" disabled selected>Select your address</option></select></div></br>
 
                         <div class="mbr-valign-top col-md-10  formblock" data-form-type="formoid" style="border: none;">
@@ -169,7 +169,7 @@
                                          <input type="text" class="form-control light" name="address" id="CHAccAddress" required="" data-form-field="Identity Number" placeholder="Agent Address*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
                                     </div>
                                     <div class="col-xs-12">
-                                        <input type="text" class="form-control light" name="issuanceAllowance" id="CHAccAllowance" required="" data-form-field="Allowance" placeholder="Approve to issue*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                        <input type="text" class="form-control light" name="issuanceAllowance" id="CHAccAllowance" required="true" data-form-field="Allowance" placeholder="Value of mCPT Agent is approved to issue*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
                                    </div>
 
                                     <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="Approve" onclick="approveIssuance()" class="btn btn-primary">Approve</button></div>
