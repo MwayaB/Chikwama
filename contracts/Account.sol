@@ -1,57 +1,120 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.13;
+
 
 contract Account{
-
-      struct Account 
+         
+     struct AccountStructure 
      {
-        address add;
+        bytes32 seed;
+        address [] addresses;
         bytes32 id;
-        uint8 chikwamaType; //0 central office 1 Agent 2 EndUser
+        uint8 accountType; //Account type 0 central office 1 Agent 2 EndUser
         bytes32 pin;
+        uint addcount;
+
     }
+    
+
     
     uint256 public accountCount;
-    mapping(bytes32 => address) accounts;
-    mapping(address => mapping(bytes32 => Account)) chikwama;
+    mapping(bytes32 => AccountStructure) account;
     
-    event CreateAccount(bytes32 NationalID, address ChikwamaAddress);
+    event CreateAccount(bytes32 nationalId);
+
     
-    function createChikwama(address _add, uint256 _id, uint8 _chikwamaType, uint256 _pin) public returns(bool)
+    function createAccount(bytes32 _id, uint8 _type, uint256 _pin) public returns(bool)
     {
-        if (accounts[keccak256(_id)]==0x0)
+        if(account[keccak256(_id)].addcount==0)
         {
-            accounts[keccak256(_id)] = _add;
-            chikwama[_add][keccak256(_id)].add = _add;
-            chikwama[_add][keccak256(_id)].id = keccak256(_id);
-            chikwama[_add][keccak256(_id)].chikwamaType = _chikwamaType;
-            chikwama[_add][keccak256(_id)].pin = keccak256(_pin);
+            account[keccak256(_id)].id = keccak256(_id);
+            account[keccak256(_id)].accountType = _type;
+            account[keccak256(_id)].pin = keccak256(_pin);
+
             accountCount++;
-            CreateAccount(keccak256(_id),_add);
+            CreateAccount(_id);
             return true;
         }
-
-    }
-    
-    function getChikwama(uint256 _id) public constant returns(address) {
-        address _add = accounts[keccak256(_id)];
-      
-        return chikwama[_add][keccak256(_id)].add;
+        
+        return false;
     
     }
     
-    function checkPin(uint256 _id, uint256 _pin) public constant returns(bool){
-        address _add = accounts[keccak256(_id)];
-        if(chikwama[_add][keccak256(_id)].pin==keccak256(_pin))return true;
+    function addSeed(uint256 _id,string _seed) public returns(bool success)
+    {
+        account[keccak256(_id)].seed= keccak256(_seed);
+        return true;
+    }
+    
+    function checkSeed(uint256 _id,string _seed) public constant returns(bool success)
+    {
+        if(account[keccak256(_id)].seed== keccak256(_seed))return true;
+        return false;
+        
+    }
+    
+    function addAddress(uint256 _id,address _add) public returns(bool)
+    {
+        account[keccak256(_id)].addresses[account[keccak256(_id)].addcount] = _add;
+        account[keccak256(_id)].addcount++;
+        return true;
+    }
+    
+    function addCount(uint256 _id) public constant returns(uint)
+    {
+        return account[keccak256(_id)].addcount;
+    }
+    
+    function deleteAccount(uint256 _id) internal returns(bool)
+    {
+        delete account[keccak256(_id)];
+        return true;
+    }
+    
+    function getAddresses(uint256 _id, uint _index)public constant returns(address)
+    {
+        return account[keccak256(_id)].addresses[_index];
+          
+    }
+    
+    
+    function getType(uint256 _id) internal constant returns(uint){
+        
+        return account[keccak256(_id)].accountType;
+    }
+    
+    
+    function checkPin(uint256 _id, uint256 _pin) public constant returns(bool,uint){
+        if(_checkPin(_id,_pin)){
+        
+            return(true, getType(_id));
+        }
+    }
+    
+    function _checkPin(uint256 _id, uint256 _pin) internal constant returns(bool){
+        if(account[keccak256(_id)].pin==keccak256(_pin))return true;
     }
     
     function changePin(uint256 _id, uint256 _pin, uint256 _newPin) public returns(bool)
     {
-        address _add = accounts[keccak256(_id)];
-        if(chikwama[_add][keccak256(_id)].pin == keccak256(_pin))
+        if(account[keccak256(_id)].pin == keccak256(_pin))
         {
-            chikwama[_add][keccak256(_id)].pin = keccak256(_newPin);
+            account[keccak256(_id)].pin = keccak256(_newPin);
             return true;
         }
         else return false;
+    }
+    
+    function changeCentralOffice(uint256 _id,bytes32 _new, uint256 _pin) external returns(bool)
+    {
+        if(_checkPin(_id,_pin)== true)
+        {
+          uint8 accountType = account[keccak256(_id)].accountType;
+          deleteAccount(_id);
+          createAccount(_new,accountType,1234);
+          return true;
+        }
+        
+        return false;
+        
     }
 }

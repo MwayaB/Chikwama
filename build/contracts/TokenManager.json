@@ -1,0 +1,650 @@
+{
+  "contract_name": "TokenManager",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "contractBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newCentralOffice",
+          "type": "bytes32"
+        },
+        {
+          "name": "_pin",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeCentralOffice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "centralOffice",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_accountContract",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "newCentralOffice",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ChangedCentralOffice",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "created",
+          "type": "string"
+        }
+      ],
+      "name": "CentralOfficeCreated",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b604051602080610476833981016040528080519150505b62ab4130600081815560018054600160a060020a031916600160a060020a038581169190911791829055169163f96f39c5916104d281604051602001526040517c010000000000000000000000000000000000000000000000000000000063ffffffff8616028152600481019390935260ff90911660248301526044820152606401602060405180830381600087803b15156100c157600080fd5b6102c65a03f115156100d257600080fd5b50505060405180515050600154600160a060020a031663c523156362ab4130336000604051602001526040517c010000000000000000000000000000000000000000000000000000000063ffffffff85160281526004810192909252600160a060020a03166024820152604401602060405180830381600087803b151561015857600080fd5b6102c65a03f1151561016957600080fd5b50505060405180519050507f289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc701313060405160208082526016908201527f43656e7472616c204f66666963652063726561746564000000000000000000006040808301919091526060909101905180910390a15b505b61028b806101eb6000396000f300606060405263ffffffff60e060020a6000350416638b7afe2e811461003a5780638e8428661461005f578063cb9095db1461008c575b600080fd5b341561004557600080fd5b61004d6100b1565b60405190815260200160405180910390f35b341561006a57600080fd5b6100786004356024356100cd565b604051901515815260200160405180910390f35b341561009757600080fd5b61004d610259565b60405190815260200160405180910390f35b73ffffffffffffffffffffffffffffffffffffffff3016315b90565b60015460008054909173ffffffffffffffffffffffffffffffffffffffff169063f4c12a4d9083806040516020015260405160e060020a63ffffffff851602815260048101929092526024820152604401602060405180830381600087803b151561013757600080fd5b6102c65a03f1151561014857600080fd5b5050506040518051905073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561018b57600080fd5b6001546000805473ffffffffffffffffffffffffffffffffffffffff9092169163d564453691869086906040516020015260405160e060020a63ffffffff8616028152600481019390935260248301919091526044820152606401602060405180830381600087803b15156101ff57600080fd5b6102c65a03f1151561021057600080fd5b50505060405180519050507f4f515b83a9fb9606d6899ec6fd1a05ba80931845343d158d80fb96817ba6ab468360405190815260200160405180910390a15060015b5b92915050565b600054815600a165627a7a72305820559df1f89afca10b9fa07e48077925f630a77150cdf744f25392d7c0d2dbe2230029",
+  "networks": {
+    "1513101868159": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8eb5ff28883edf2f73e16c6db45eab449549e247",
+      "updated_at": 1513101953608
+    },
+    "1513102939327": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x00f07905e2c6adebf17458ff4ed5f36ef707620e",
+      "updated_at": 1513102985979
+    },
+    "1513107455654": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x18550c08caea3b37ec2e7157e3da5c00a21ee57c",
+      "updated_at": 1513107595201
+    },
+    "1513154673847": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa1a1e02ccb1c87e5106522206b60dbc8f4228bb8",
+      "updated_at": 1513154928434
+    },
+    "1513155477752": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xca013193222e2c08c918dbe8c9ee8cced963ae2d",
+      "updated_at": 1513155757899
+    },
+    "1513177428019": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x052792d2c4ca1b51482573d1ed3603a9a5f32e25",
+      "updated_at": 1513177512197
+    },
+    "1513190938384": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xff2c8e811ffc644f4509ef1c434f0822bea88566",
+      "updated_at": 1513190984266
+    },
+    "1513191244167": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xdd8522739c931954c56e3d58b025808df666fcb4",
+      "updated_at": 1513191281069
+    },
+    "1513243774007": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x18fd659d67402c1e40119250dd1c3e2d3c931130",
+      "updated_at": 1513243815789
+    },
+    "1513263394089": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8f390fe2e7842f5cb92a83b07a4d88b6bab9758f",
+      "updated_at": 1513263414793
+    },
+    "1513268418249": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9c602ab73ff0d6aa048dbfd7963227d7851cca2d",
+      "updated_at": 1513268429141
+    },
+    "1513281766929": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x2c4cd9eab0f0a42840ca35a3d4210642bbde88f1",
+      "updated_at": 1513281804197
+    },
+    "1513466537200": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x801ff3063be20f43a868176d680b73dc529a581b",
+      "updated_at": 1513466610466
+    },
+    "1513977167455": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xce839747840aa56dfeafca5e5d5bd8236b7db89f",
+      "updated_at": 1513977179610
+    },
+    "1514297621994": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xbea5d089e6999a9f8cf0351dd648a1a53f6c8dc3",
+      "updated_at": 1514297719415
+    },
+    "1514992189758": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xda45895d8611f70e669057c4fb15973a62d891e2",
+      "updated_at": 1514992254007
+    },
+    "1514996681650": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xd59c46461488dfd0afc6af11edf72221c0b452b0",
+      "updated_at": 1514996707536
+    },
+    "1515002604149": {
+      "events": {
+        "0x942c8f9ef97aa7405d24bf2bd3db9f34594090bf604327e4bff65e189451cd2b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "newCentralOffice",
+              "type": "uint256"
+            }
+          ],
+          "name": "ChangedCentralOffice",
+          "type": "event"
+        },
+        "0x289ebe45c95fca54984a6e11235e03deb45800df80469ad8f2a0f12cc7013130": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "created",
+              "type": "string"
+            }
+          ],
+          "name": "CentralOfficeCreated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xefea2a6e9b32d86e76fa4eec119ce2911dde4b0f",
+      "updated_at": 1515002639340
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1515490120403
+}

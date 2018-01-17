@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Site made with Mobirise Website Builder v4.4.0, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v4.4.0, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
+  <meta name="description" content="">
+  <title>User Account</title>
+  <link rel="stylesheet" href="assets/et-line-font-plugin/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&subset=latin">
+  <link rel="stylesheet" href="assets/bootstrap-material-design-font/css/material.css">
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/animate.css/animate.min.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/mobirise3-blocks-plugin/css/style.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+
+
+
+</head>
+<body onload="populateAddresses()">
+        <script src="./js/eth-lightwallet/dist/lightwallet.min.js"></script>
+        <script type="text/javascript" src="./js/web3/dist/web3.js"></script>
+        <script type="text/javascript" src="./js/hooked-web3-provider/build/hooked-web3-provider.js"></script>
+        <script type="text/javascript" src="./js/async/lib/async.js"></script>
+<section id="ext_menu-0" data-rv-view="40">
+
+    <nav class="navbar navbar-dropdown navbar-fixed-top">
+        <div class="container">
+
+            <div class="mbr-table">
+                <div class="mbr-table-cell">
+
+                    <div class="navbar-brand">
+
+                        <a class="navbar-caption" href="index.html">CHIKWAMA</a>
+                    </div>
+                    <div>
+                            <label id="accountId" style="color:white; font-size:small;"></label>
+                        </div>
+
+                </div>
+                <div class="mbr-table-cell">
+
+                    <button class="navbar-toggler pull-xs-right hidden-md-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar">
+                        <div class="hamburger-icon"></div>
+                    </button>
+
+                    <ul class="nav-dropdown collapse pull-xs-right nav navbar-nav navbar-toggleable-sm" id="exCollapsingNavbar"><li class="nav-item" data-item="1"><a class="nav-link link">Send mCPT</a></li><li class="nav-item" data-item="2"><a class="nav-link link">Withdraw</a></li><li class="nav-item" data-item="3"><a class="nav-link link">Send Ether</a></li><li class="nav-item" data-item="4"><a class="nav-link link" onclick="getSizeOf()">Sell</a></li><li class="nav-item" data-item="5"><a class="nav-link link" onclick="getSizeOf()">Buy</a></li></ul>
+                    <button hidden="" class="navbar-toggler navbar-close" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar">
+                        <div class="close-icon"></div>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+</section>
+
+<section class="engine"><a href="index.html">bootstrap slider</a></section><section class="mbr-section article mbr-parallax-background mbr-after-navbar" id="msg-box8-1" data-rv-view="42" style="background-image: url(assets/images/mbr-715x1080.jpg); padding-top: 120px; padding-bottom: 120px;">
+
+    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(34, 34, 34);">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-xs-center">
+                <h3 class="mbr-section-title display-2">Chikwama&nbsp;</h3>
+                <div class="lead"><p>Your decentralized exchange</p></div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="mbr-section mbr-section-md-padding" id="social-buttons3-4" data-rv-view="58" style="background-color: rgb(46, 46, 46); padding-top: 30px; padding-bottom: 30px;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-xs-center">
+                <h3 class="mbr-section-title display-2">SHARE THIS PAGE!</h3>
+                <div>
+
+                  <div class="mbr-social-likes" data-counters="false">
+                    <span class="btn btn-social facebook" title="Share link on Facebook">
+                        <i class="socicon socicon-facebook"></i>
+                    </span>
+                    <span class="btn btn-social twitter" title="Share link on Twitter">
+                        <i class="socicon socicon-twitter"></i>
+                    </span>
+                    <span class="btn btn-social plusone" title="Share link on Google+">
+                        <i class="socicon socicon-googleplus"></i>
+                    </span>
+
+
+                  </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mbr-section mbr-section-hero mbr-section-full extHeader4 mbr-parallax-background" id="extHeader4-2" data-rv-view="45" style="background-image: url(assets/images/mbr-718x1080.jpg);">
+
+    <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(192, 163, 117);">
+    </div>
+
+    <div class="mbr-table mbr-table-full">
+        <div class="mbr-table-cell">
+
+            <div class="container">
+                <div class="mbr-section row">
+                    <div class="mbr-table-md-up">
+                        <div class="formWraper">
+
+                        </div>
+
+
+                        <div class="mbr-table-cell mbr-right-padding-md-up col-md-7 text-xs-center text-md-right" >
+                            <div id="asks" class="item-4 content-item"><h4>Bids</h4> <table id="askTable"></table></div>
+                            <div id="bids" class="item-5 content-item"><h4>Asks</h4><table id="bidTable"></table></div>
+                            <div id="asks" class="item-4 content-item"><h4>Your Asks</h4> <table id="askTable"></table></div>
+                            <div id="bids" class="item-5 content-item"><h4>Your Bids</h4><table id="bidTable"></table></div>
+
+                        </div>
+                        <div id="addr" style="background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"></div><br>
+                        <div><select id="sendFrom" class="form-control light"><option value="" disabled selected>Select your address</option></select></div></br>
+                        <div class="mbr-valign-top col-md-10  formblock" data-form-type="formoid" style="border: none;">
+                            <div data-form-alert="true">
+                                <div hidden="" data-form-alert-success="true" class="alert alert-form alert-success text-xs-center">Thanks for filling out form!</div>
+                            </div style="background-color: rgb(89, 89, 89);">
+                            <div class="item-1 content-item">
+                            <form  data-form-title="Send mCPT" style="background-color: rgb(89, 89, 89);">
+                                    <input hidden="" type="text" class="form-control light" size="80" name="identity" id="seed" required="" data-form-field="Wallet Seed" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                   
+                                    <div class="col-xs-12">
+                                        <input type="text" class="form-control light" name="sendiZarAddress" id="sendiZarAddress" required="" data-form-field="Allowance" placeholder="Enter address to send to*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                   </div>
+
+                                    <div class="col-xs-12">
+                                         <input type="text" class="form-control light" name="sendiZarAmount" id="sendiZarAmount" required="" data-form-field="Enter Pin" placeholder="Enter value of mCPT to send*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                    </div>
+
+
+                                <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="sendiZar" class="btn btn-primary" onclick="handleTransfer()">Send</button></div><br/>
+                                    
+                             </form> 
+                            </div>
+                            <div class="item-2 content-item" style="display: none;">
+                                    
+                                    <form  data-form-title="Approve Withdraw mCPT" style="background-color: rgb(89, 89, 89);">
+                                                     
+
+                                                <div class="col-xs-12">
+                                                     <input type="text" class="form-control light" name="agentAddress" id="agentAddress" required="" data-form-field="Account Type" placeholder="Enter agent address*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                                </div>
+            
+                                                <div class="col-xs-12">
+                                                     <input type="text" class="form-control light" name="withdrawalAmount" id="withdrawalAmount" required="" data-form-field="Enter Pin" placeholder="Enter withrawal amount*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                                </div>
+            
+            
+                                            <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="handleWithdrawApproval" class="btn btn-primary" onclick="handleApprove()">Approve</button></div>
+                                         </form> 
+                            </div>
+                            <div class="item-3 content-item" style="display: none;">
+                                    <form  data-form-title="Send Ether" style="background-color: rgb(89, 89, 89);">
+                                            
+      
+                                          <div class="col-xs-12">
+                                               <input type="text" class="form-control light" name="sendTo" id="sendTo" required="" data-form-field="Identity Number" placeholder="Enter ether address*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+                                                                                <div class="col-xs-12">
+                                               <input type="text" class="form-control light" name="sendValueAmount" id="sendValueAmount" required="" data-form-field="Enter Pin" placeholder="Enter amount to send*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+      
+                                      <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="sendEtc" class="btn btn-primary" onclick="sendEth()">Send</button></div>
+                                   </form>
+                            </div>
+                            <div class="item-4 content-item" style="display: none;">
+                                    <form  data-form-title="Buy Ether" style="background-color: rgb(89, 89, 89);">
+                                            
+      
+                                          <div class="col-xs-12">
+                                               <input type="text" class="form-control light" name="identity" id="sellAmount" required="" data-form-field="Identity Number" placeholder="Enter amount of mCPT to Sell*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+                                                                                <div class="col-xs-12">
+                                               <input type="number" class="form-control light" name="pin" id="sellPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+      
+                                      <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="withdraw" class="btn btn-primary" onclick="handleSell()">Place Order</button></div>
+                                   </form>
+                            </div>
+                            <div class="item-5 content-item" style="display: none;">
+                                    <form  data-form-title="Buy iZAR" style="background-color: rgb(89, 89, 89);">
+                                            
+      
+                                          <div class="col-xs-12">
+                                               <input type="text" class="form-control light" name="identity" id="buyAmount" required="" data-form-field="Identity Number" placeholder="Enter amount of mCPT to buy*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+                                                                                <div class="col-xs-12">
+                                               <input type="text" class="form-control light" name="pin" id="buyPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                          </div>
+      
+      
+                                      <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="withdraw" class="btn btn-primary" onclick="handleBuy()">Place Order</button></div>
+                                   </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</section>
+
+<section class="mbr-section extFooter1" id="extFooter1-3" data-rv-view="55" style="background-color: rgb(38, 38, 38); padding-top: 40px; padding-bottom: 40px;">
+
+
+
+    <div class="mbr-table mbr-table-full">
+        <div class="mbr-table-cell">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 wraper">
+                        <div class="image_wrap" style="margin-bottom: 25px;">
+
+                            <h3 class="mbr-section-title display-2">Chikwama</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="wrap">
+                            <p></p><ul><li><a href="">Github&nbsp;</a></li><li><a href="">&nbsp;Fonts</a></li><li><a href="">Unlimited Sites</a></li><li><a href="">Google</a></li><li><a href="">Node</a></li></ul><p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+  <script src="assets/web/assets/jquery/jquery.min.js"></script>
+  <script src="assets/tether/tether.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/viewport-checker/jquery.viewportchecker.js"></script>
+  <script src="assets/dropdown/js/script.min.js"></script>
+  <script src="assets/touch-swipe/jquery.touch-swipe.min.js"></script>
+  <script src="assets/smooth-scroll/smooth-scroll.js"></script>
+  <script src="assets/jarallax/jarallax.js"></script>
+  <script src="assets/social-likes/social-likes.js"></script>
+  <script src="assets/mobirise3-blocks-plugin/js/script.js"></script>
+  <script src="assets/theme/js/script.js"></script>
+  <script src="assets/formoid/formoid.min.js"></script>
+
+
+  <input name="animation" type="hidden">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+  </body>
+</html>
