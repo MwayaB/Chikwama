@@ -49,6 +49,7 @@ function newAddresses(password) {
     }
     
     getBalances();
+    getPrice();
     handleBalanceOf();
     handleAllowanceOf();
     
@@ -87,8 +88,9 @@ function loadOrderBook(sizeOf) {
   var abi = exchangeabi
   var contract = web3.eth.contract(abi).at(contractAddr)
   var functionName = 'getOrderBook'
-  var bidRows = 0;
-  var askRows = 0;
+  var bidRows = 2;
+  var askRows = 2;
+ 
   for (var i = 0; i < sizeOf; ++i) {
     var args = JSON.parse('['+i+']')
     var valueEth = 0
@@ -105,24 +107,37 @@ function loadOrderBook(sizeOf) {
       
       var cells = 0;
       var msg = txhash.toString()
-      if (msg.indexOf("false")>=0) 
+      
+      if (msg.indexOf("true")>=0 && askRows<=sizeOf) 
       {
+          
           var newRow = askTable.insertRow(askRows);
           var cell = newRow.insertCell(cells);
-
-          cell.innerHTML=msg;
+          cells++;
+          var trade = msg.substring(msg.indexOf(",")+1);
+          var ethPrice = trade.substring(0,trade.indexOf(",")) / 1.0e18
+          var amount = trade.substring(trade.indexOf(",",msg.indexOf(",")+1)+1,trade.indexOf(",",trade.indexOf(",",msg.indexOf(",")+1)+1))
+          cell.innerHTML='<p style="color:green;">'+ethPrice+'</p>';
+          cell = newRow.insertCell(cells);
+          cell.innerHTML='<p style="color:green;">'+amount+'</p>';
           askRows++;          
       }
-
-      if(msg.indexOf("true")>=0) 
+      
+      if (msg.indexOf("false")>=0 && bidRows<=sizeOf) 
       { 
         var newRow = bidTable.insertRow(bidRows);
         var cell = newRow.insertCell(cells);
-
-        cell.innerHTML=msg;
+        cells++;
+        var trade = msg.substring(msg.indexOf(",")+1);
+        var ethPrice = trade.substring(0,trade.indexOf(",")) / 1.0e18
+        var amount = trade.substring(trade.indexOf(",",msg.indexOf(",")+1)+1,trade.indexOf(",",trade.indexOf(",",msg.indexOf(",")+1)+1))
+        cell.innerHTML='<p style="color:red;">'+ethPrice+'</p>';
+        cell = newRow.insertCell(cells);
+        cell.innerHTML='<p style="color:red;">'+amount+'</p>';
         bidRows++;
         
       }
+     
 
 
     }
@@ -539,6 +554,7 @@ function handleSell() {
 }
 
 function handleBuy() {
+
   var fromAddr = document.getElementById('sendFrom').value
   var contractAddr = exchangeAdd
   var abi = exchangeabi
@@ -549,7 +565,7 @@ function handleBuy() {
   var amount = document.getElementById('buyAmount').value
   console.log('buying: ' + amount + ' ,at ' + ethPrice +'ETH')
   var args = JSON.parse('[' + price + ',' + amount + ']')
-  var valueEth = amount * ethPrice
+  var valueEth = (amount * ethPrice).toPrecision(5)
   var value = parseFloat(valueEth) * 1.0e18
   var gasPrice = 50000000000
   var gas = 4541592
@@ -566,6 +582,26 @@ function handleBuy() {
   }
   args.push(callback)
   contract[functionName].apply(this, args)
+}
+
+function buyFunds(){
+  value1 = parseFloat(document.getElementById("buyAmount").value);
+  value2 = parseFloat(document.getElementById("buyPrice").value);
+     if(!value1==""&&!value2=="")
+     {
+      sum = value1 * value2;
+      document.getElementById("reqFunds").innerHTML = "";
+      document.getElementById("reqFunds").innerHTML += sum +"ETH";
+     }
+}
+
+function getPrice(){
+  var xhr = new XMLHttpRequest();
+  var price;
+  xhr.open("GET", "https://api.etherscan.io/api?module=stats&action=ethprice&apikey=XH6VK5AGH3CV4HHW8APR7WGP1BSJSYZPUZ",false);
+  price =  xhr.responseText.substring(100,107);
+  console.log(price);
+  document.getElementById("price").innerHTML += price;
 }
 
 

@@ -41,7 +41,8 @@
 
                     <div class="navbar-brand">
 
-                        <a class="navbar-caption" href="index.html">CHIKWAMA</a>
+                        <a class="navbar-caption" href="index.html">CHIKWAMA</a><br>
+                        
                     </div>
                     <div>
                             <label id="accountId" style="color:white; font-size:small;"></label>
@@ -54,7 +55,7 @@
                         <div class="hamburger-icon"></div>
                     </button>
 
-                    <ul class="nav-dropdown collapse pull-xs-right nav navbar-nav navbar-toggleable-sm" id="exCollapsingNavbar"><li class="nav-item" data-item="1"><a class="nav-link link">Send mCPT</a></li><li class="nav-item" data-item="2"><a class="nav-link link">Withdraw</a></li><li class="nav-item" data-item="3"><a class="nav-link link">Send Ether</a></li><li class="nav-item" data-item="4"><a class="nav-link link" onclick="getSizeOf()">Sell</a></li><li class="nav-item" data-item="5"><a class="nav-link link" onclick="getSizeOf()">Buy</a></li></ul>
+                    <ul class="nav-dropdown collapse pull-xs-right nav navbar-nav navbar-toggleable-sm" id="exCollapsingNavbar"><li class="nav-item" data-item="1"><a class="nav-link link">Send mCPT</a></li><li class="nav-item" data-item="2"><a class="nav-link link">Withdraw</a></li><li class="nav-item" data-item="3"><a class="nav-link link">Send Ether</a></li><li class="nav-item" data-item="4"><a class="nav-link link">Sell</a></li><li class="nav-item" data-item="5"><a class="nav-link link">Buy</a></li></ul>
                     <button hidden="" class="navbar-toggler navbar-close" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar">
                         <div class="close-icon"></div>
                     </button>
@@ -128,14 +129,17 @@
 
 
                         <div class="mbr-table-cell mbr-right-padding-md-up col-md-7 text-xs-center text-md-right" >
-                            <div id="asks" class="item-4 content-item"><h4>Bids</h4> <table id="askTable"></table></div>
-                            <div id="bids" class="item-5 content-item"><h4>Asks</h4><table id="bidTable"></table></div>
-                            <div id="asks" class="item-4 content-item"><h4>Your Asks</h4> <table id="askTable"></table></div>
-                            <div id="bids" class="item-5 content-item"><h4>Your Bids</h4><table id="bidTable"></table></div>
+                                
+                            <div id="asks" class="item-5 content-item" style="display: none;  margin:20px; background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"><table id="askTable" class="mbr-price-table" style="width:500px; text-align:center; height: 200px; overflow-y: scroll; display:block;"><th>Asks</th><tr style="border:1px; border-style:dotted; margin:20px;"><td>Price(Eth)</td><td>Amount(mCPT)</td></tr></table><br></div>
+                            <div id="yourBids" class="item-5 content-item" style="display: none; margin:20px; background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"><table id="yourBidTable" style="width:500px; text-align:center; height: 200px; overflow-y: scroll; display:block;"><th>Open Bids</th><tr style="border:1px; border-style:dotted; padding:10px;"><td>Price(Eth)</td><td>Amount(mCPT)</td><td>Valid Until</td></tr></table></div>
+                            <div id="bids" class="item-4 content-item" style="display: none; margin:20px; background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"><table id="bidTable" style="width:500px; text-align:center; height: 200px; overflow-y: scroll; display:block;"><th>Bids</th><tr style="border:1px; border-style:dotted;"><td>Price(Eth)</td><td>Amount(mCPT)</td></tr></table><br></div>
+                            <div id="yourAsks" class="item-4 content-item" style="display: none; margin:20px; background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"> <table id="yourAskTable" style="width:500px; text-align:center; height: 200px; overflow-y: scroll; display:block;"><th>Open Asks</th><tr style="border:1px; border-style:dotted;"><td>Price(Eth)</td><td>Amount(mCPT)</td><td>Valid Until</td></tr></table></div><br>
+                            
 
                         </div>
+                        <p id="price" style="color:rgb(255, 255, 255); float:inherit;" id="ethPrice">ETH/USD: </p>
                         <div id="addr" style="background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.75;"></div><br>
-                        <div><select id="sendFrom" class="form-control light"><option value="" disabled selected>Select your address</option></select></div></br>
+                        <div><select id="sendFrom" class="form-control light"><option value="">Select your address</option></select></div></br>
                         <div class="mbr-valign-top col-md-10  formblock" data-form-type="formoid" style="border: none;">
                             <div data-form-alert="true">
                                 <div hidden="" data-form-alert-success="true" class="alert alert-form alert-success text-xs-center">Thanks for filling out form!</div>
@@ -199,7 +203,7 @@
                                           </div>
       
                                                                                 <div class="col-xs-12">
-                                               <input type="number" class="form-control light" name="pin" id="sellPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                               <input type="text" class="form-control light" name="pin" id="sellPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
                                           </div>
       
       
@@ -211,16 +215,18 @@
                                             
       
                                           <div class="col-xs-12">
-                                               <input type="text" class="form-control light" name="identity" id="buyAmount" required="" data-form-field="Identity Number" placeholder="Enter amount of mCPT to buy*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                               <input type="text" class="form-control light" name="identity" id="buyAmount" required="" data-form-field="Identity Number" placeholder="Enter amount of mCPT to buy*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);" onkeyup="buyFunds()">
                                           </div>
       
                                                                                 <div class="col-xs-12">
-                                               <input type="text" class="form-control light" name="pin" id="buyPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);">
+                                               <input type="text" class="form-control light" name="pin" id="buyPrice" required="" data-form-field="Enter Pin" placeholder="Enter price in Ether*" style="border-bottom: 1px dotted rgb(245, 245, 245); color: rgb(245, 245, 245);" onkeyup="buyFunds()">
                                           </div>
       
       
                                       <div class="col-xs-12" style="margin-top: 10px; text-align: center"><button type="button" id="withdraw" class="btn btn-primary" onclick="handleBuy()">Place Order</button></div>
                                    </form>
+                                   <br>
+                                   <div id="requiredFunds" style="background-color: rgb(89, 89, 89); color:rgb(255, 255, 255); opacity:.95;"><p>Required Funds:</p><p id="reqFunds" style="color: red"></p></div>
                             </div>
                         </div>
 
@@ -231,7 +237,7 @@
         </div>
     </div>
 
-
+    
 
 </section>
 
