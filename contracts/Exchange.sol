@@ -42,7 +42,7 @@ contract Exchange
     //Constructor
     
     function Exchange(address _fiatPeggedContract)public{
-        fiatPeggedToken =  FiatPeggedToken(_fiatPeggedContract);
+        fiatPeggedToken = FiatPeggedToken(_fiatPeggedContract);
     }
     
     function getOrderBook(uint _index)returns(bool,uint, uint,uint)
@@ -58,27 +58,21 @@ contract Exchange
     function() public payable {
     }
 
-    function buy(uint256 _price, uint256 _tokens) public payable returns(bool success)
-    {
+    function buy(uint256 _price, uint256 _tokens) public payable returns(bool success) {
         trade.trader = msg.sender;
         trade.side = false;
         trade.price = _price;
         trade.tokens = _tokens;
         trade.validity = now + 14 * 1 days;
         
-        uint tradeValue = (_tokens*_price)* 1 ether;
+        uint tradeValue = (_tokens*_price)*1 ether;
         //Check if valid trade
-        if(etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(tradeValue)|| _tokens==0)
-        {
+        if (etherBalanceOf(trade.trader)<etherBalance[trade.trader]+(tradeValue)||_tokens==0) {
             return false;
-        }
-        else
-        {
-            if(msg.value==tradeValue)
-            {
+        } else {
+            if (msg.value==tradeValue) {
                   // Check if this is the first entry in the price book
-                if(sizeOf ==0)
-                {
+                if (sizeOf == 0) {
                     etherBalance[trade.trader] += (tradeValue);
                     priceBook.push(trade);
                     sizeOf++;
@@ -96,23 +90,17 @@ contract Exchange
         
     }
     
-    function sell(uint256 _price, uint256 _tokens) public payable returns(bool success)
-    {
+    function sell(uint256 _price, uint256 _tokens) public payable returns(bool success) {
         trade.trader = msg.sender;
         trade.side = true;
         trade.price = _price;
         trade.tokens = _tokens;
-        trade.validity = now + 14 * 1 days;
+        trade.validity = now + 14 * 1 days;        
         
-      
-       
-        if(fiatPeggedToken.setAllowance(address(this),msg.sender,fiatPeggedToken.allowanceOf(address(this),trade.trader)+_tokens))
-        {
-            
-            
+        if (fiatPeggedToken.setAllowance(address(this),msg.sender,fiatPeggedToken.allowanceOf(address(this),trade.trader)+_tokens)) {
+                     
             // Check if this is the first entry in the price book
-                if(sizeOf ==0)
-                {
+                if (sizeOf == 0) {
                     tradeBalance[trade.trader] += _tokens;
                     priceBook.push(trade);
                     sizeOf++;
@@ -123,50 +111,40 @@ contract Exchange
                 setTrade(trade);
                 return true;
             
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
     
     //transfer tokens from seller to buyer and ether from buyer to seller
-    function make(uint256 _tokens,uint256 _price, address _buyer, address _seller) internal
-    {   uint tradeValue = (_tokens*_price) * 1 ether;
+    function make(uint256 _tokens,uint256 _price, address _buyer, address _seller) internal {
+           uint tradeValue = (_tokens*_price) * 1 ether;
         
         _seller.transfer(tradeValue);
         etherBalance[_buyer] = etherBalance[_buyer]-tradeValue;
         fiatPeggedToken.transferFrom(_seller,_buyer, _tokens);
         tradeBalance[_seller] = tradeBalance[_seller]-_tokens;
-        ExchangeResult('exchange done');
+        ExchangeResult("exchange done");
  
     }
     
     
-    function withdraw(address _trader, bool _side, uint256 _tokens, uint256 _price) internal returns(bool)
-    {
+    function withdraw(address _trader, bool _side, uint256 _tokens, uint256 _price) internal returns(bool) {
         uint256 tradeValue = (_tokens * _price) * 1 ether;
         //check if seller, then withdraw amount from trade contract
-        if(_side)
-        {
-            if(tradeBalance[_trader]>=_tokens){
+        if (_side) {
+            if (tradeBalance[_trader]>=_tokens){
                 tradeBalance[_trader]-=_tokens;
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
-        }
-        else
-        {
-            if(etherBalance[_trader]>= tradeValue){
-                etherBalance[_trader]-= tradeValue;
+        } else {
+            if (etherBalance[_trader] >= tradeValue) {
+                etherBalance[_trader] -= tradeValue;
                 _trader.transfer(tradeValue);
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }

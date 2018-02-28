@@ -59,7 +59,7 @@ function newAddresses(password) {
   })
 }
 
-function getSizeOf() {
+function getBids() {
 
   var fromAddr = document.getElementById('sendFrom').value
   var contractAddr = exchangeAdd
@@ -75,20 +75,92 @@ function getSizeOf() {
   var callback = function (err, txhash) {
     console.log('error: ' + err)
     console.log('txhash: ' + txhash)
-    loadOrderBook(txhash)
+    loadBids(txhash)
   }
   args.push(callback)
   contract[functionName].apply(this, args)
 }
 
+function getAsks() {
+  
+    var fromAddr = document.getElementById('sendFrom').value
+    var contractAddr = exchangeAdd
+    var abi = exchangeabi
+    var contract = web3.eth.contract(abi).at(contractAddr)
+    var functionName = 'sizeOf'
+    var args = JSON.parse('[]')
+    var valueEth = 0
+    var value = parseFloat(valueEth) * 1.0e18
+    var gasPrice = 50000000000
+    var gas = 4541592
+    args.push({ from: fromAddr, value: value, gasPrice: gasPrice, gas: gas })
+    var callback = function (err, txhash) {
+      console.log('error: ' + err)
+      console.log('txhash: ' + txhash)
+      loadAsks(txhash)
+    }
+    args.push(callback)
+    contract[functionName].apply(this, args)
+  }
 
-function loadOrderBook(sizeOf) {
+
+function loadBids(sizeOf) {
   var fromAddr = document.getElementById('sendFrom').value
   var contractAddr = exchangeAdd
   var abi = exchangeabi
   var contract = web3.eth.contract(abi).at(contractAddr)
   var functionName = 'getOrderBook'
   var bidRows = 2;
+  var cells = 0;
+  
+  for (var i = 0; i < sizeOf; ++i) {
+    var args = JSON.parse('['+i+']')
+    var valueEth = 0
+    var value = parseFloat(valueEth) * 1.0e18
+    var gasPrice = 50000000000
+    var gas = 4541592
+    args.push({ from: fromAddr, value: value, gasPrice: gasPrice, gas: gas })
+    var callback = function (err, txhash) {
+      console.log('error: ' + err)
+      console.log('txhash: ' + txhash)
+      
+      var bidTable = document.getElementById('bidTable');
+      
+      
+      var msg = txhash.toString()
+
+      
+      if (msg.indexOf("false")>=0) 
+      { 
+        var newRow = bidTable.insertRow(bidRows);
+        var cell = newRow.insertCell(cells);
+        cell.innerHTML=' '
+        cells++;
+        var trade = msg.substring(msg.indexOf(",")+1);
+        var ethPrice = trade.substring(0,trade.indexOf(",")) / 1.0e18
+        var amount = trade.substring(trade.indexOf(",",msg.indexOf(",")+1)+1,trade.indexOf(",",trade.indexOf(",",msg.indexOf(",")+1)+1))
+        cell.innerHTML='<p style="color:red;">'+ethPrice+'</p>';
+        cell = newRow.insertCell(cells);
+        cell.innerHTML='<p style="color:red;">'+amount+'</p>';
+        bidRows++;
+        
+      }
+     
+
+
+    }
+    args.push(callback)
+    contract[functionName].apply(this, args)
+  }
+
+}
+
+function loadAsks(sizeOf) {
+  var fromAddr = document.getElementById('sendFrom').value
+  var contractAddr = exchangeAdd
+  var abi = exchangeabi
+  var contract = web3.eth.contract(abi).at(contractAddr)
+  var functionName = 'getOrderBook'
   var askRows = 2;
  
   for (var i = 0; i < sizeOf; ++i) {
@@ -102,30 +174,15 @@ function loadOrderBook(sizeOf) {
       console.log('error: ' + err)
       console.log('txhash: ' + txhash)
       
-      var bidTable = document.getElementById('bidTable');
       var askTable = document.getElementById('askTable');
       
       var cells = 0;
       var msg = txhash.toString()
+
       
-      if (msg.indexOf("true")>=0 && askRows<=sizeOf) 
-      {
-          
-          var newRow = askTable.insertRow(askRows);
-          var cell = newRow.insertCell(cells);
-          cells++;
-          var trade = msg.substring(msg.indexOf(",")+1);
-          var ethPrice = trade.substring(0,trade.indexOf(",")) / 1.0e18
-          var amount = trade.substring(trade.indexOf(",",msg.indexOf(",")+1)+1,trade.indexOf(",",trade.indexOf(",",msg.indexOf(",")+1)+1))
-          cell.innerHTML='<p style="color:green;">'+ethPrice+'</p>';
-          cell = newRow.insertCell(cells);
-          cell.innerHTML='<p style="color:green;">'+amount+'</p>';
-          askRows++;          
-      }
-      
-      if (msg.indexOf("false")>=0 && bidRows<=sizeOf) 
+      if (msg.indexOf("true")>=0) 
       { 
-        var newRow = bidTable.insertRow(bidRows);
+        var newRow = askTable.insertRow(askRows);
         var cell = newRow.insertCell(cells);
         cells++;
         var trade = msg.substring(msg.indexOf(",")+1);
@@ -134,7 +191,7 @@ function loadOrderBook(sizeOf) {
         cell.innerHTML='<p style="color:red;">'+ethPrice+'</p>';
         cell = newRow.insertCell(cells);
         cell.innerHTML='<p style="color:red;">'+amount+'</p>';
-        bidRows++;
+        askRows++;
         
       }
      
@@ -350,6 +407,14 @@ $('.nav-item').click(function () {
   var this_item = $(this).attr("data-item");
   $('.content-item').hide();
   $('.item-' + this_item).fadeIn();
+  if(this_item == 4)
+  {
+    getBids();
+  }
+  if(this_item == 5)
+  {
+    getAsks();
+  }
 });
 
 function createAccount() {
